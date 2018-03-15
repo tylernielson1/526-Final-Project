@@ -1,0 +1,9 @@
+{
+  "name": "526-Final-Project",
+  "version": "1.0.0",
+  "description": "A web application created as the final project for CIS 526",
+  "main": "app.js",
+  "repository": "https://github.com/tylernielson1/526-Final-Project.git",
+  "author": "Tyler Nielson <tyler.snielson@gmail.com>",
+  "license": "MIT"
+}
