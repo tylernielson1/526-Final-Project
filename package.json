@@ -2,13 +2,17 @@
   "name": "526-Final-Project",
   "version": "1.0.0",
   "description": "A web application created as the final project for CIS 526",
-  "main": "app.js",
+  "main": "app/app.js",
   "repository": "https://github.com/tylernielson1/526-Final-Project.git",
   "author": "Tyler Nielson <tyler.snielson@gmail.com>",
   "license": "MIT",
+  "scripts": {
+	"start" : "node app/app.js"
+  },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.16.3",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "swagger": "^0.7.5"
   }
 }
