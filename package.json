@@ -7,6 +7,8 @@
   "author": "Tyler Nielson <tyler.snielson@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "ejs": "^2.5.7"
+    "ejs": "^2.5.7",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
   }
 }
