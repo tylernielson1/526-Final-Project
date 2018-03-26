@@ -11,7 +11,7 @@ Once you have both of those installed, clone the repository and open the base di
 Run the command `yarn install` to install the required dependencies.
 
 ## Running the project
-In order to run the project, you must have a config file in the style of the sample config file found in the config directory named `config.js.
+In order to run the project, you must have a config file in the style of the sample config file found in the config directory named `config.js`.
 Without that, the project will not start as the information required to run will not be available.
 If you do not have credentials for the database, please contact me and I will get something set up for you.
 If you have created the config.js file, run the following command in the base directory of the project: `npm start`.
