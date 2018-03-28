@@ -1,4 +1,5 @@
 const SwaggerExpress = require('swagger-express-mw')
+const SwaggerUi = require('swagger-tools/middleware/swagger-ui')
 const express = require('express')
 const config = require('./config/config')
 const path = require('path')
@@ -15,9 +16,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     //installs middleware
     swaggerExpress.register(server)
+    server.use(SwaggerUi(swaggerExpress.runner.swagger))
 
     server.set('view engine', 'ejs')
     server.use('/static', express.static(path.join(__dirname, 'static')))
+
 
     server.get('/', function(req, res) {
         res.render(path.join(__dirname, 'public/index.ejs'),{name: "Tyler"})
