@@ -1,19 +1,27 @@
 {
-  "name": "526-Final-Project",
-  "version": "1.0.0",
+  "name": "526-final",
+  "version": "0.0.1",
+  "private": true,
   "description": "A web application created as the final project for CIS 526",
-  "main": "app/app.js",
+  "keywords": [],
   "repository": "https://github.com/tylernielson1/526-Final-Project.git",
   "author": "Tyler Nielson <tyler.snielson@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "start": "node app/app.js"
-  },
+  "main": "app.js",
   "dependencies": {
-    "ejs": "^2.5.7",
+    "ejs": "^2.5.8",
     "express": "^4.16.3",
     "mysql": "^2.15.0",
-    "npm": "^5.8.0",
-    "swagger": "^0.7.5"
+    "swagger-express-mw": "^0.1.0",
+	"npm": "^5.8.0",
+	"swagger": "^0.7.5"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
   }
 }
