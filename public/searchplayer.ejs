@@ -43,27 +43,46 @@
 			<div class="row" id="options" style="display: none">
 				<div class="filler"></div>
 				<div class="playerSearchCol">
-					<fieldset id="singularSalary">
+					<fieldset id="playerTeam">
+						<legend>Team</legend>
+						TODO: ejs to create the dropdown options
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<fieldset id="salary">
 						<legend>Salary</legend>
-						<input type="radio" name="typeOfSearch" value="greaterThan"> Greater than <br>
-						<input type="radio" name="typeOfSearch" value="equalTo"> Equal to <br>
-						<input type="radio" name="typeOfSearch" value="lessThan"> Less than <br>
-						<input type="radio" name="typeOfSearch" value="between" id="between"> Between <br>
+						<input type="radio" name="typeOfSearch" value="greaterThan" onclick="disableSalaryTextBox()"> Greater than <br>
+						<input type="radio" name="typeOfSearch" value="equalTo" onclick="disableSalaryTextBox()"> Equal to <br>
+						<input type="radio" name="typeOfSearch" value="lessThan" onclick="disableSalaryTextBox()"> Less than <br>
+						<input type="radio" name="typeOfSearch" value="between" id="between" onclick="disableSalaryTextBox()"> Between <br>
 						Salary 1: <input type="number" id="salary1"name="playerSalary1">
 						Salary 2: <input type="number" id="salary2" name="playerSalary2">
 					</fieldset>
 				</div>
 				<div class="playerSearchCol">
-					<h4>Position</h4>
+					<fieldset id="position">
+						<legend>Position</legend>
+						<input type="checkbox" name="gk" value="gk"> Goalkeeper <br>
+						<input type="checkbox" name="df" value="df"> Defender <br>
+						<input type="checkbox" name="mf" value="mf"> Midfielder <br>
+						<input type="checkbox" name="fw" value="fw"> Forward
+					</fieldset>
 				</div>
 				<div class="playerSearchCol">
-					<h4>Player Number</h4>
+					<fieldset id="jerseyNumber">
+						<legend>Player Number</legend>
+						Player Number: <input type="text" name="playerNumber" maxlength="2">
+					</fieldset>
 				</div>
 				<div class="playerSearchCol">
-					<h4>Nationality</h4>
+					<fieldset id="nationality">
+						<legend>Nationality</legend>
+						TODO: ejs to create the dropdown options
+					</fieldset>
 				</div>
 				<div class="filler"></div>
 			</div>
+		</form>
 
 		<div class="row">
 			<div class="filler"></div>
@@ -95,8 +114,10 @@
 			}
 
 			function disableSalaryTextBox() {
-				if(document.getElementById('between').checked) {
-					document.getElementById('salary2').disabled = true;
+				if(!document.getElementById("between").checked) {
+					document.getElementById("salary2").disabled = true;
+				} else {
+					document.getElementById("salary2").disabled = false;
 				}
 			}
 		</script>
