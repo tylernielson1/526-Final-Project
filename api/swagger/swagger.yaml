@@ -4,7 +4,7 @@ info:
   title: "526 Soccer Database Application"
 host: localhost:3000
 # basePath prefixes all resource paths 
-basePath: /
+basePath: /api
 # 
 schemes:
   # tip: remove http to make production-grade
@@ -17,6 +17,36 @@ consumes:
 produces:
   - application/json
 paths:
+  /getPlayers:
+    x-swagger-router-controller: player_controller
+    get:
+      description: Retrieves all players in the database and returns them as JSON data.
+      operationId: getAllPlayers
+      responses:
+        "200": #Add player list as return value.
+          description: Success
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /getPlayers/{playerName}:
+    x-swagger-router-controller: player_controller
+    get:
+      description: Retrieves all players in the database whose names contain the provided search text and returns them as JSON data.
+      operationId: getPlayer
+      parameters:
+        - in: path
+          name: playerName
+          required: true
+          type: string
+          description: The text to search players by
+      responses:
+        "200": #Add player list as return value.
+          description: Success
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
@@ -45,6 +75,15 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  NotFoundErrorResponse:
+    required:
+      - message
+      - errorCode
+    properties:
+      message:
+        type: string
+      errorCode:
+        type: integer
   HelloWorldResponse:
     required:
       - message
