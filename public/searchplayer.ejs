@@ -19,12 +19,63 @@
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
-        <header class="myHeader">
+		<header class="myHeader">
 			<div>
 				<h1 style="font-family:'Ubuntu',sans-serif;">
-					Home
+					Search Players
 				</h1>
 			</div>
-        </header>
+		</header>
+
+		<div class="row">
+			<div class="filler"></div>
+			<div class="playerSearch">
+				<form class="search" action="/playerresults" method="post">
+					Search: <input type="text" name="playerName">
+					<input type="submit" value="Search">
+					<a href="javascript:void(0)" style="float: right" onclick="showHideOptions()">Advanced Options</a>
+				</form>
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div class="row" id="options" style="display: none">
+			<div class="filler"></div>
+			<div class="playerSearch">
+
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+		</script>
+
     </body>
 </html>

@@ -5,7 +5,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>
-			Team Search - Soccer Application
+			Player Search - Soccer Application
 		</title>
 	</head>
 
@@ -19,12 +19,42 @@
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
-        <header class="myHeader">
+		<header class="myHeader">
 			<div>
 				<h1 style="font-family:'Ubuntu',sans-serif;">
-					Home
+					Search Teams
 				</h1>
 			</div>
-        </header>
+		</header>
+
+		<div class="row">
+			<div class="filler"></div>
+			<div class="teamSearch">
+				Hello
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+		</script>
+
     </body>
 </html>

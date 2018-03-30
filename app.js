@@ -3,6 +3,7 @@ const SwaggerUi = require('swagger-tools/middleware/swagger-ui')
 const express = require('express')
 const config = require('./config/config')
 const path = require('path')
+const bodyParser = require('body-parser')
 const server = express()
 
 var swagger_config = {
@@ -17,12 +18,15 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     //installs middleware
     swaggerExpress.register(server)
     server.use(SwaggerUi(swaggerExpress.runner.swagger))
+    server.use(bodyParser.urlencoded({ extended: true }))
 
+    //sets the view engine to use ejs and sets the static directory for css, js, and images.
     server.set('view engine', 'ejs')
     server.use('/static', express.static(path.join(__dirname, 'static')))
 
+    //establishes all of the get endpoints.
     server.get('/', function(req, res) {
-        res.render(path.join(__dirname, 'public/index.ejs'), {name: "Tyler"})
+        res.render(path.join(__dirname, 'public/index.ejs'), {})
     })
 
     server.get('/playerinfo', function(req, res) {
@@ -41,14 +45,44 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/searchteam.ejs'), {})
     })
 
-    server.get('/playerresults', function(req, res) {
+    server.all('/playerresults', function(req, res) {
+        if(req.method == "POST") {
+            console.log(req.body.playerName)
+        }
+        else if (req.method != "GET") {
+            res.end();
+        }
         res.render(path.join(__dirname, 'public/playerresults.ejs'), {})
     })
+
+    /*server.get('/playerresults', function(req, res) {
+        console.log(req.query['playerName'])
+        res.render(path.join(__dirname, 'public/playerresults.ejs'), {user: "Tyler"})
+    })*/
 
     server.get('/teamresults', function(req, res) {
         res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
     })
 
+    server.get('/login', function(req, res) {
+        res.render(path.join(__dirname, 'public/login.ejs'), {})
+    })
+
+    server.get('/signup', function(req, res) {
+        res.render(path.join(__dirname, 'public/signup.ejs'), {})
+    })
+
+    //establishes all of the post endpoints.
+
+    /*server.post('/playerresults', function(req, res) {
+        res.render(path.join(__dirname, 'public/playerresults.ejs'), {user: req.body.playerName})
+    })*/
+
+    server.post('/teamresults', function(req, res) {
+        res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
+    })
+
+    //configures the port number and starts the server.
     var port = config.app.port
     server.listen(port, function() {
         console.log(`Listening on port ${port}`)
