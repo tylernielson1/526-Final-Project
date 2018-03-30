@@ -64,13 +64,21 @@
 .bio, .devbio, .playerSearch, .teamSearch {
     width: 60%;
     float: left;
-    padding: 15px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+}
+
+.playerSearchCol {
+    width: 15%;
+    float: left;
+    padding: 10px;
     background-color: #f1f1f1;
     font-size: 18px;
 }
 
 #devs {
-    width: 80%;
+    width: 60%;
     float: left;
     text-align: center;
     background-color: #f1f1f1;
@@ -94,6 +102,12 @@
         float: none;
         display: block;
         text-align: left;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .playerSearchCol {
+        width: 100%;
     }
 }
 

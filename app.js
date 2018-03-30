@@ -55,10 +55,9 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/playerresults.ejs'), {})
     })
 
-    /*server.get('/playerresults', function(req, res) {
-        console.log(req.query['playerName'])
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {user: "Tyler"})
-    })*/
+    server.get('/loader', function(req, res) {
+        res.render(path.join(__dirname, 'public/loader.ejs'), {})
+    })
 
     server.get('/teamresults', function(req, res) {
         res.render(path.join(__dirname, 'public/teamresults.ejs'), {})

@@ -27,25 +27,43 @@
 			</div>
 		</header>
 
-		<div class="row">
-			<div class="filler"></div>
-			<div class="playerSearch">
-				<form class="search" action="/playerresults" method="post">
-					Search: <input type="text" name="playerName">
-					<input type="submit" value="Search">
+		<form class="search" action="/playerresults" method="post">
+			<div class="row">
+				<div class="filler"></div>
+				<div class="playerSearch">
+					<fieldset style="border: 0">
+						Search: <input type="text" name="playerName">
+						<input type="submit" value="Search">
+					</fieldset>
 					<a href="javascript:void(0)" style="float: right" onclick="showHideOptions()">Advanced Options</a>
-				</form>
+				</div>
+				<div class="filler"></div>
 			</div>
-			<div class="filler"></div>
-		</div>
 
-		<div class="row" id="options" style="display: none">
-			<div class="filler"></div>
-			<div class="playerSearch">
-
+			<div class="row" id="options" style="display: none">
+				<div class="filler"></div>
+				<div class="playerSearchCol">
+					<fieldset id="singularSalary">
+						<legend>Salary</legend>
+						<input type="radio" name="typeOfSearch" value="greaterThan"> Greater than <br>
+						<input type="radio" name="typeOfSearch" value="equalTo"> Equal to <br>
+						<input type="radio" name="typeOfSearch" value="lessThan"> Less than <br>
+						<input type="radio" name="typeOfSearch" value="between" id="between"> Between <br>
+						Salary 1: <input type="number" id="salary1"name="playerSalary1">
+						Salary 2: <input type="number" id="salary2" name="playerSalary2">
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<h4>Position</h4>
+				</div>
+				<div class="playerSearchCol">
+					<h4>Player Number</h4>
+				</div>
+				<div class="playerSearchCol">
+					<h4>Nationality</h4>
+				</div>
+				<div class="filler"></div>
 			</div>
-			<div class="filler"></div>
-		</div>
 
 		<div class="row">
 			<div class="filler"></div>
@@ -73,6 +91,12 @@
 					x.style.display = "block";
 				} else {
 					x.style.display = "none";
+				}
+			}
+
+			function disableSalaryTextBox() {
+				if(document.getElementById('between').checked) {
+					document.getElementById('salary2').disabled = true;
 				}
 			}
 		</script>
