@@ -61,7 +61,7 @@
     padding: 15px;
 }
 
-.bio, .devbio, .playerSearch, .teamSearch {
+.bio, .devbio, .playerSearch, .teamSearch, .resultsPlayer {
     width: 80%;
     float: left;
     padding: 10px;

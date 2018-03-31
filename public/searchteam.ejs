@@ -64,7 +64,7 @@
 				<div class="teamSearchCol">
 					<fieldset>
 						<legend>Home Stadium</legend>
-						<input type="text" id="stadiumName" name="stadiumNameToSearch" maxlength="26">
+						Stadium Name: <input type="text" id="stadiumName" name="stadiumNameToSearch" maxlength="26">
 					</fieldset>
 				</div>
 				<div class="filler"></div>
@@ -102,7 +102,7 @@
 				}
 			}
 
-			function disableSalaryTextBox() {
+			function disableYearTextBox() {
 				if(!document.getElementById("between").checked) {
 					document.getElementById("year2").disabled = true;
 				} else {

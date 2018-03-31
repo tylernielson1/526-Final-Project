@@ -27,23 +27,61 @@
 			</div>
 		</header>
 
+		<form class="searchTeams" action="/teamresults" method="post">
+			<div class="row">
+				<div class="filler"></div>
+				<div class="teamSearch">
+					<fieldset style="border: 0">
+						Search: <input type="text" name="teamName">
+						<input type="submit" value="Search">
+					</fieldset>
+					<a href="javascript:void(0)" style="float: right" onclick="showHideOptions()">Advanced Options</a>
+				</div>
+				<div class="filler"></div>
+			</div>
+
+			<div class="row" id="options" style="display: none">
+				<div class="filler"></div>
+				<div class="teamSearchCol">
+					<fieldset id="yearFounded">
+						<legend>Year Founded</legend>
+						<input type="radio" name="typeOfSearch" value="greaterThan" onclick="disableYearTextBox()"> Greater than <br>
+						<input type="radio" name="typeOfSearch" value="equalTo" onclick="disableYearTextBox()"> Equal to <br>
+						<input type="radio" name="typeOfSearch" value="lessThan" onclick="disableYearTextBox()"> Less than <br>
+						<input type="radio" name="typeOfSearch" value="between" id="between" onclick="disableYearTextBox()"> Between <br>
+						Year 1: <input type="text" id="year1" name="foundedYear1" maxlength="4"> <br>
+						Year 2: <input type="text" id="year2" name="foundedYear2" maxlength="4">
+					</fieldset>
+				</div>
+				<div class="teamSearchCol">
+					<fieldset id="league">
+						<legend>League</legend>
+						<input type="checkbox" name="mls" value="mls"> Major League Soccer <br>
+						<input type="checkbox" name="premier" value="premier"> Premier League <br>
+						<input type="checkbox" name="bundes" value="bundesliga"> Bundesliga
+					</fieldset>
+				</div>
+				<div class="teamSearchCol">
+					<fieldset>
+						<legend>Home Stadium</legend>
+						<input type="text" id="stadiumName" name="stadiumNameToSearch" maxlength="26">
+					</fieldset>
+				</div>
+				<div class="filler"></div>
+			</div>
+		</form>
+
+		<hr>
+
 		<div class="row">
 			<div class="filler"></div>
-			<div class="teamSearch">
-				Hello
-			</div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
 			<div class="filler"></div>
-        </div>
-        
-        <div class="row">
-            <div class="filler"></div>
-            <footer class="footnote">
-                Copyright &copy; 2018 2 Cat Dads and a Guy
-                <br>
-                Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
-            </footer>
-            <div class="filler"></div>
-        </div>
+		</div>
 
 		<script>
 			function responsiveDesignFunc() {
@@ -52,6 +90,23 @@
 					x.className += " responsive";
 				} else {
 					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+
+			function disableSalaryTextBox() {
+				if(!document.getElementById("between").checked) {
+					document.getElementById("year2").disabled = true;
+				} else {
+					document.getElementById("year2").disabled = false;
 				}
 			}
 		</script>
