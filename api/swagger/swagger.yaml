@@ -71,6 +71,36 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /getTeams:
+    x-swagger-router-controller: team_controller
+    get:
+      description: Retrieves all teams in the database and returns them as JSON data.
+      operationId: getAllTeams
+      responses:
+        "200": #Add team list as return value.
+          description: Success
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /getTeams/{teamName}:
+    x-swagger-router-controller: team_controller
+    get:
+      description: Retrieves all teams in the database whose names contain the provided search text and returns them as JSON data.
+      operationId: getTeam
+      parameters:
+        - in: path
+          name: teamName
+          required: true
+          type: string
+          description: The text to search team by
+      responses:
+        "200": #Add player list as return value.
+          description: Success
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
