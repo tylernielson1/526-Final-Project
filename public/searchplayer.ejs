@@ -27,7 +27,7 @@
 			</div>
 		</header>
 
-		<form class="search" action="/playerresults" method="post">
+		<form class="searchPlayers" action="/playerresults" method="post">
 			<div class="row">
 				<div class="filler"></div>
 				<div class="playerSearch">
@@ -55,7 +55,7 @@
 						<input type="radio" name="typeOfSearch" value="equalTo" onclick="disableSalaryTextBox()"> Equal to <br>
 						<input type="radio" name="typeOfSearch" value="lessThan" onclick="disableSalaryTextBox()"> Less than <br>
 						<input type="radio" name="typeOfSearch" value="between" id="between" onclick="disableSalaryTextBox()"> Between <br>
-						Salary 1: <input type="number" id="salary1"name="playerSalary1">
+						Salary 1: <input type="number" id="salary1"name="playerSalary1"> <br>
 						Salary 2: <input type="number" id="salary2" name="playerSalary2">
 					</fieldset>
 				</div>
@@ -83,6 +83,8 @@
 				<div class="filler"></div>
 			</div>
 		</form>
+
+		<hr>
 
 		<div class="row">
 			<div class="filler"></div>
