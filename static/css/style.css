@@ -61,12 +61,32 @@
     padding: 15px;
 }
 
-.bio, .devbio, .playerSearch, .teamSearch, .resultsPlayer {
+.filler2 {
+    width: 35%;
+    float: left;
+    padding: 15px;
+}
+
+.bio, .devbio, .playerSearch, .teamSearch {
     width: 80%;
     float: left;
     padding: 10px;
     background-color: #f1f1f1;
     font-size: 18px;
+}
+
+.resultsPlayer {
+    width: 30%;
+    float: left;
+    padding: 2px;
+    font-size: 18px;
+    text-align: right;
+    border: 1px solid lightgrey;
+    background-color: #f1f1f1;
+}
+
+.playerPhoto {
+    float: left;
 }
 
 .playerSearchCol {
@@ -114,8 +134,11 @@
 }
 
 @media screen and (max-width: 600px) {
-    .playerSearchCol, .teamSearchCol {
+    .playerSearchCol, .teamSearchCol, .resultsPlayer {
         width: 100%;
+    }
+    .filler2 {
+        width: 0%;
     }
 }
 
