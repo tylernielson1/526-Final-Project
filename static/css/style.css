@@ -75,7 +75,7 @@
     font-size: 18px;
 }
 
-.resultsPlayer {
+.resultsPlayer, .resultsTeam {
     width: 30%;
     float: left;
     padding: 2px;
@@ -85,7 +85,7 @@
     background-color: #f1f1f1;
 }
 
-.playerPhoto {
+.playerPhoto, .teamPhoto {
     float: left;
 }
 
@@ -134,7 +134,7 @@
 }
 
 @media screen and (max-width: 600px) {
-    .playerSearchCol, .teamSearchCol, .resultsPlayer {
+    .playerSearchCol, .teamSearchCol, .resultsPlayer, .resultsTeam {
         width: 100%;
     }
     .filler2 {
@@ -180,7 +180,7 @@
 }
 
 @media screen and (min-width: 1024px) {
-    .devbio:hover {
+    .devbio:hover, .resultsPlayer:hover, .resultsTeam:hover {
         transform: scale(1.01);
     }
 }
