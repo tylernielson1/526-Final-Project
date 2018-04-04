@@ -1,7 +1,7 @@
 const mysql = require('mysql')
 const config = require('../config/config')
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host        : config.db.host,
     port        : config.db.port,
     user        : config.db.name,
@@ -9,13 +9,4 @@ const connection = mysql.createConnection({
     database    : config.db.database
 })
 
-connection.connect(function(err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack)
-        return;
-    }
-
-    console.log('connected as id ' + connection.threadId)
-})
-
-module.exports = connection;
+module.exports = pool
