@@ -47,6 +47,24 @@ paths:
           description: Data not found
           schema:
             $ref: "#/definitions/NotFoundErrorResponse"
+  /getCountries:
+    x-swagger-router-controller: misc_controller
+    get:
+      description: Retries all countries in the database.
+      operationId: getCountries
+      responses:
+        "200":
+          description: An array of strings
+          schema:
+            type: array
+            description: The array of countries
+            properties:
+              type: string
+              description: The country name
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
