@@ -17,19 +17,24 @@ consumes:
 produces:
   - application/json
 paths:
-  /getPlayers:
+  /players/getPlayers:
     x-swagger-router-controller: player_controller
     get:
       description: Retrieves all players in the database and returns them as JSON data.
       operationId: getAllPlayers
       responses:
-        "200": #Add player list as return value.
-          description: Success
+        "200":
+          description: Returns an array of players found.
+          schema:
+            description: An array of player objects
+            type: array
+            items:
+              $ref: "#/definitions/PlayerObject"
         "404":
           description: Data not found
           schema:
             $ref: "#/definitions/NotFoundErrorResponse"
-  /getPlayers/{playerName}:
+  /players/getPlayers/{playerName}:
     x-swagger-router-controller: player_controller
     get:
       description: Retrieves all players in the database whose names contain the provided search text and returns them as JSON data.
@@ -41,67 +46,52 @@ paths:
           type: string
           description: The text to search players by
       responses:
-        "200": #Add player list as return value.
-          description: Success
-        "404":
-          description: Data not found
-          schema:
-            $ref: "#/definitions/NotFoundErrorResponse"
-  /getCountries:
-    x-swagger-router-controller: misc_controller
-    get:
-      description: Retries all countries in the database.
-      operationId: getCountries
-      responses:
         "200":
-          description: An array of strings
+          description: Returns an array of players found.
           schema:
+            description: An array of player objects
             type: array
-            description: The array of countries
-            properties:
-              type: string
-              description: The country name
+            items:
+              $ref: "#/definitions/PlayerObject"
         "404":
           description: Data not found
           schema:
             $ref: "#/definitions/NotFoundErrorResponse"
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+  /players/getPlayers/filter:
+    x-swagger-router-controller: player_controller
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      description: Retrieves all players in the database who match the criteria provided in the body of the request object and returns them as JSON data.
+      operationId: filterSearchPlayer
       responses:
         "200":
-          description: Success
+          description: Returns an array of players found.
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
+            description: An array of player objects
+            type: array
+            items:
+              $ref: "#/definitions/PlayerObject"
+        "404":
+          description: Data not found
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /getTeams:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /teams/getTeams:
     x-swagger-router-controller: team_controller
     get:
       description: Retrieves all teams in the database and returns them as JSON data.
       operationId: getAllTeams
       responses:
-        "200": #Add team list as return value.
-          description: Success
+        "200":
+          description: Returns an array of teams found
+          schema:
+            description: An array of team objects
+            type: array
+            items:
+              $ref: "#/definitions/TeamObject"
         "404":
           description: Data not found
           schema:
             $ref: "#/definitions/NotFoundErrorResponse"
-  /getTeams/{teamName}:
+  /teams/getTeams/{teamName}:
     x-swagger-router-controller: team_controller
     get:
       description: Retrieves all teams in the database whose names contain the provided search text and returns them as JSON data.
@@ -113,8 +103,66 @@ paths:
           type: string
           description: The text to search team by
       responses:
-        "200": #Add player list as return value.
-          description: Success
+        "200":
+          description: Returns an array of teams found
+          schema:
+            description: An array of team objects
+            type: array
+            items:
+              $ref: "#/definitions/TeamObject"
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /teams/getTeams/filter:
+    x-swagger-router-controller: team_controller
+    get:
+      description: Retrieves all teams in the database who match the criteria provided in the body of the request object and returns them as JSON data.
+      operationId: filterSearchTeam
+      responses:
+        "200":
+          description: Returns an array of teams found
+          schema:
+            description: An array of team objects
+            type: array
+            items:
+              $ref: "#/definitions/TeamObject"
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /misc/getCountries:
+    x-swagger-router-controller: misc_controller
+    get:
+      description: Retrieves all countries in the database.
+      operationId: getCountries
+      responses:
+        "200":
+          description: An array of strings
+          schema:
+            description: The array of countries
+            type: array
+            items:
+              type: string
+              description: The country name
+        "404":
+          description: Data not found
+          schema:
+            $ref: "#/definitions/NotFoundErrorResponse"
+  /misc/getTeamNames:
+    x-swagger-router-controller: misc_controller
+    get:
+      description: Retrieves all team names in the database.
+      operationId: getTeamNames
+      responses:
+        "200":
+          description: An array of strings
+          schema:
+            description: The array of team names
+            type: array
+            items:
+              type: string
+              description: The team name
         "404":
           description: Data not found
           schema:
@@ -132,15 +180,59 @@ definitions:
         type: string
       errorCode:
         type: integer
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   ErrorResponse:
     required:
       - message
     properties:
       message:
         type: string
+  PlayerObject:
+    required:
+      - firstName
+      - lastName
+      - number
+      - position
+      - salary
+      - team
+      - nationality
+    properties:
+      firstName:
+        type: string
+        description: The first name of the player
+      lastName:
+        type: string
+        description: The last name of the player
+      number:
+        type: integer
+        description: The jersey number for the player
+      position:
+        type: string
+        description: The position the player plays
+      salary:
+        type: integer
+        description: The salary/transfer market value of the player
+      team:
+        type: string
+        description: The name of the team the player plays for
+      nationality:
+        type: string
+        description: The country the player represents nationally
+  TeamObject:
+    required:
+      - name
+      - yearFounded
+      - league
+      - homeStadium
+    properties:
+      name:
+        type: string
+        description: The name of the team
+      yearFounded:
+        type: integer
+        description: The year the team was founded
+      league:
+        type: string
+        description: The league the team plays in
+      homeStadium:
+        type: string
+        description: The name of the stadium the team plays in
