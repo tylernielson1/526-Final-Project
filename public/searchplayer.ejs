@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			Player Search - Soccer Application
+		</title>
+	</head>
+
+	<body>
+		<div class="customNavBar" id="myNavBar">
+			<a href="/" id="left">Home</a>
+			<a class="active" href="searchplayers" id="left">Search Players</a>
+			<a href="searchteams" id="left">Search Teams</a>
+			<a href="#" id="right">Login</a>
+			<a href="#" id="right">Sign Up</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
+		</div>
+
+		<header class="myHeader">
+			<div>
+				<h1 style="font-family:'Ubuntu',sans-serif;">
+					Search Players
+				</h1>
+			</div>
+		</header>
+
+		<form class="searchPlayers" action="/playerresults" method="post">
+			<div class="row">
+				<div class="filler"></div>
+				<div class="playerSearch">
+					<fieldset style="border: 0">
+						Search: <input type="text" name="playerName">
+						<input type="submit" value="Search">
+					</fieldset>
+					<a href="javascript:void(0)" style="float: right" onclick="showHideOptions()">Advanced Options</a>
+				</div>
+				<div class="filler"></div>
+			</div>
+
+			<div class="row" id="options" style="display: none">
+				<div class="filler"></div>
+				<div class="playerSearchCol">
+					<fieldset id="playerTeam">
+						<legend>Team</legend>
+						TODO: ejs to create the dropdown options
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<fieldset id="salary">
+						<legend>Salary</legend>
+						<input type="radio" name="typeOfSearch" value="greaterThan" onclick="disableSalaryTextBox()"> Greater than <br>
+						<input type="radio" name="typeOfSearch" value="equalTo" onclick="disableSalaryTextBox()"> Equal to <br>
+						<input type="radio" name="typeOfSearch" value="lessThan" onclick="disableSalaryTextBox()"> Less than <br>
+						<input type="radio" name="typeOfSearch" value="between" id="between" onclick="disableSalaryTextBox()"> Between <br>
+						Salary 1: <input type="number" id="salary1"name="playerSalary1"> <br>
+						Salary 2: <input type="number" id="salary2" name="playerSalary2">
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<fieldset id="position">
+						<legend>Position</legend>
+						<input type="checkbox" name="gk" value="gk"> Goalkeeper <br>
+						<input type="checkbox" name="df" value="df"> Defender <br>
+						<input type="checkbox" name="mf" value="mf"> Midfielder <br>
+						<input type="checkbox" name="fw" value="fw"> Forward
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<fieldset id="jerseyNumber">
+						<legend>Player Number</legend>
+						Player Number: <input type="text" name="playerNumber" maxlength="2">
+					</fieldset>
+				</div>
+				<div class="playerSearchCol">
+					<fieldset id="nationality">
+						<legend>Nationality</legend>
+						TODO: ejs to create the dropdown options
+					</fieldset>
+				</div>
+				<div class="filler"></div>
+			</div>
+		</form>
+
+		<hr>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+
+			function disableSalaryTextBox() {
+				if(!document.getElementById("between").checked) {
+					document.getElementById("salary2").disabled = true;
+				} else {
+					document.getElementById("salary2").disabled = false;
+				}
+			}
+		</script>
+
+    </body>
+</html>

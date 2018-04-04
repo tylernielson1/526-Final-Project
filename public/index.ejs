@@ -2,17 +2,99 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" type="text/css" href="static/css/style.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>
-			Soccer Application
+			Home - Soccer Application
 		</title>
 	</head>
 
-	<body>
-		Hello, World!
-		This is testing the ejs templating. My name is <%= name%>.
+	<body> 
+		<div class="customNavBar" id="myNavBar">
+			<a class="active" href="/" id="left">Home</a>
+			<a href="searchplayers" id="left">Search Players</a>
+			<a href="searchteams" id="left">Search Teams</a>
+			<a href="#" id="right">Login</a>
+			<a href="#" id="right">Sign Up</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
+		</div>
+
+        <header class="myHeader">
+			<div>
+				<h1 style="font-family:'Ubuntu',sans-serif;">
+					Home
+				</h1>
+			</div>
+		</header>
+	
+
+		<div class="row" style="margin-bottom: 10px">
+			<div class="filler"></div>
+			<div class="bio">
+				<h2>526 Soccer Web Application</h2>
+				<hr>
+				<h3>The Problem</h3>
+				<p>There is no reliable way to find information about soccer leagues and players across the world easily. The information is typically scattered throughout many websites or locations, and some players or leagues may not even have any information to be found online.</p>
+				<hr>
+				<h3>Our Solution</h3>
+				<p>Proposed solution is to create a web application to provide a central location for information about soccer players, teams, and leagues. We also allow for users to create accounts and enter information on their favorite player or team.</p>
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div id="devHeader">
+			<div>
+				<h3 style="font-family:'Ubuntu',sans-serif;">
+					Meet the Developers
+				</h3>
+			</div>	
+		</div>
+
+		<div class="row" style="margin-top: 10px">
+			<div class="filler"></div>
+			<div class="devbio">
+				<h3>Tyler Nielson</h3>
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div class="row" style="margin-top: 10px">
+			<div class="filler"></div>
+			<div class="devbio">
+				<h3>Kevin Beashore</h3>
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<div class="row" style="margin-top: 10px">
+			<div class="filler"></div>
+			<div class="devbio">
+				<h3>Jacob Dokos</h3>
+			</div>
+			<div class="filler"></div>
+		</div>
+
+		<hr>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+		</script>
 	</body>
 </html>
