@@ -4,10 +4,19 @@ const express = require('express')
 const config = require('./config/config')
 const path = require('path')
 const bodyParser = require('body-parser')
+const http = require('http')
 const server = express()
 
 var swagger_config = {
     appRoot: __dirname // required config, do not delete
+}
+
+var http_request = {
+    hostname: config.app.host,
+    port: config.app.port,
+    path: "",
+    method: "",
+    json: true
 }
 
 SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
@@ -38,7 +47,18 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.get('/searchplayers', function(req, res) {
-        res.render(path.join(__dirname, 'public/searchplayer.ejs'), {})
+        var body = ''
+        http_request.path = "/api/misc/getCountries"
+        http_request.method = "GET"
+        http.get(http_request, function (response) {
+            response.on('data', function(chunk) {
+                body += chunk;
+            })
+            response.on('end', function() {
+                nations = JSON.parse(body)
+                res.render(path.join(__dirname, 'public/searchplayer.ejs'), {nations: nations})
+            })
+        })
     })
 
     server.get('/searchteams', function(req, res) {

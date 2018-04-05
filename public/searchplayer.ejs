@@ -46,10 +46,6 @@
 					<fieldset id="playerTeam">
 						<legend>Team</legend>
 						<select name="teamSelector">
-							<option value="">Select Team</option>
-							<% teams.forEach(function(team) { %>
-								<option value="<%= team.name %>"><%= team.name %></option>
-							<% }) %>
 						</select>
 					</fieldset>
 				</div>
@@ -80,13 +76,13 @@
 					</fieldset>
 				</div>
 				<div class="playerSearchCol">
-					<fieldset id="nationality">
+					<fieldset id="nationality" style="display: inline-block">
 						<legend>Nationality</legend>
 						<select name="nationalitySelector">
 							<option value="">Select Nationality</option>
-							<% nations.forEach(function(nation) { %>
-								<option value="<%= nation.name %>"><%= nation.name %></option>
-							<% }) %>
+							<% for(var i = 0; i < nations.length; i++) { %>
+							<option value="<%= nations[i].name %>"><%= nations[i].name %></option>
+							<% } %>
 						</select>
 					</fieldset>
 				</div>

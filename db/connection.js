@@ -10,3 +10,8 @@ const pool = mysql.createPool({
 })
 
 module.exports = pool
+
+/*<option value="">Select Team</option>
+<% teams.forEach(function(team) { %>
+    <option value="<%= team.name %>"><%= team.name %></option>
+<% }) %>*/
