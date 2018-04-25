@@ -45,7 +45,12 @@
 				<div class="playerSearchCol">
 					<fieldset id="playerTeam">
 						<legend>Team</legend>
-						TODO: ejs to create the dropdown options
+						<select name="teamSelector">
+							<option value="">Select Team</option>
+							<% teams.forEach(function(team) { %>
+								<option value="<%= team.name %>"><%= team.name %></option>
+							<% }) %>
+						</select>
 					</fieldset>
 				</div>
 				<div class="playerSearchCol">
@@ -77,7 +82,12 @@
 				<div class="playerSearchCol">
 					<fieldset id="nationality">
 						<legend>Nationality</legend>
-						TODO: ejs to create the dropdown options
+						<select name="nationalitySelector">
+							<option value="">Select Nationality</option>
+							<% nations.forEach(function(nation) { %>
+								<option value="<%= nation.name %>"><%= nation.name %></option>
+							<% }) %>
+						</select>
 					</fieldset>
 				</div>
 				<div class="filler"></div>
