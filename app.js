@@ -59,6 +59,20 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.all('/playerresults', function(req, res) {
         if(req.method == "POST") {
+            /*if(req.body.playerName.length === 0) {
+                http_request.path = "/api/players/getPlayers"
+                http_request.method = "GET"
+                var body = ''
+                http.get(http_request, function(response) {
+                    response.on('data', function(chunk) {
+                        body += chunk
+                    })
+                    response.on('end', function() {
+                        var players = JSON.parse(body)
+                        res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                    })
+                })
+            }*/
             console.log(req.body.playerName)
         }
         else if (req.method != "GET") {
