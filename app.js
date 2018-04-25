@@ -59,6 +59,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
                 res.render(path.join(__dirname, 'public/searchplayer.ejs'), {nations: nations})
             })
         })
+
     })
 
     server.get('/searchteams', function(req, res) {
