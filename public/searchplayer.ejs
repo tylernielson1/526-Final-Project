@@ -46,6 +46,10 @@
 					<fieldset id="playerTeam">
 						<legend>Team</legend>
 						<select name="teamSelector">
+							<option value="">Select Team</option>
+							<% for(var i = 0; i < teams.length; i++) { %>
+							<option value="<%= teams[i].name %>"><%= teams[i].name %></option>
+							<% } %>
 						</select>
 					</fieldset>
 				</div>

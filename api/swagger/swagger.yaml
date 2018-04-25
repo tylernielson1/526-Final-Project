@@ -131,42 +131,6 @@ paths:
           description: Data not found
           schema:
             $ref: "#/definitions/NotFoundErrorResponse"
-  /misc/getCountries:
-    x-swagger-router-controller: misc_controller
-    get:
-      description: Retrieves all countries in the database.
-      operationId: getCountries
-      responses:
-        "200":
-          description: An array of strings
-          schema:
-            description: The array of countries
-            type: array
-            items:
-              type: object
-              description: The country name
-        "404":
-          description: Data not found
-          schema:
-            $ref: "#/definitions/NotFoundErrorResponse"
-  /misc/getTeamNames:
-    x-swagger-router-controller: misc_controller
-    get:
-      description: Retrieves all team names in the database.
-      operationId: getTeamNames
-      responses:
-        "200":
-          description: An array of strings
-          schema:
-            description: The array of team names
-            type: array
-            items:
-              type: string
-              description: The team name
-        "404":
-          description: Data not found
-          schema:
-            $ref: "#/definitions/NotFoundErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions

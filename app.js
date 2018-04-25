@@ -11,6 +11,9 @@ var swagger_config = {
     appRoot: __dirname // required config, do not delete
 }
 
+var nations = require('./config/nations.json')
+var teams = require('./config/teams.json')
+
 var http_request = {
     hostname: config.app.host,
     port: config.app.port,
@@ -47,19 +50,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.get('/searchplayers', function(req, res) {
-        var body = ''
-        http_request.path = "/api/misc/getCountries"
-        http_request.method = "GET"
-        http.get(http_request, function (response) {
-            response.on('data', function(chunk) {
-                body += chunk;
-            })
-            response.on('end', function() {
-                nations = JSON.parse(body)
-                res.render(path.join(__dirname, 'public/searchplayer.ejs'), {nations: nations})
-            })
-        })
-
+        res.render(path.join(__dirname, 'public/searchplayer.ejs'), {nations: nations, teams: teams})
     })
 
     server.get('/searchteams', function(req, res) {
@@ -73,7 +64,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         else if (req.method != "GET") {
             res.end();
         }
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {})
+        res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams})
     })
 
     server.get('/loader', function(req, res) {
