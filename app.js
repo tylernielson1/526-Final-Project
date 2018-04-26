@@ -5,6 +5,7 @@ const config = require('./config/config')
 const path = require('path')
 const bodyParser = require('body-parser')
 const http = require('http')
+const player = require('./app/player')
 const server = express()
 
 var swagger_config = {
@@ -59,26 +60,32 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.all('/playerresults', function(req, res) {
         if(req.method == "POST") {
-            /*if(req.body.playerName.length === 0) {
-                http_request.path = "/api/players/getPlayers"
-                http_request.method = "GET"
-                var body = ''
-                http.get(http_request, function(response) {
-                    response.on('data', function(chunk) {
-                        body += chunk
-                    })
-                    response.on('end', function() {
-                        var players = JSON.parse(body)
-                        res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
-                    })
+            if(req.body.playerName === "") {
+                player.getAllPlayers()
+                .then(players => {
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
                 })
-            }*/
-            console.log(req.body.playerName)
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else {
+                player.getPlayersByName(req.body.playerName)
+                .then(players => {
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
         }
         else if (req.method != "GET") {
             res.end();
         }
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams})
     })
 
     server.get('/loader', function(req, res) {
