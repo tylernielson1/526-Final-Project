@@ -43,11 +43,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/index.ejs'), {})
     })
 
-    server.get('/player', function(req, res) {
+    server.get('/player-info/:player', function(req, res) {
         res.render(path.join(__dirname, 'public/player.ejs'), {})
     })
 
-    server.get('/team', function(req, res) {
+    server.get('team-info/:team', function(req, res) {
         res.render(path.join(__dirname, 'public/team.ejs'), {})
     })
 
