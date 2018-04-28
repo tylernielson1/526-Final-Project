@@ -6,6 +6,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const http = require('http')
 const player = require('./app/player')
+const team = require('./app/team')
 const server = express()
 
 var swagger_config = {
@@ -42,11 +43,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/index.ejs'), {})
     })
 
-    server.get('/playerinfo', function(req, res) {
+    server.get('/player', function(req, res) {
         res.render(path.join(__dirname, 'public/player.ejs'), {})
     })
 
-    server.get('/teaminfo', function(req, res) {
+    server.get('/team', function(req, res) {
         res.render(path.join(__dirname, 'public/team.ejs'), {})
     })
 
@@ -88,12 +89,51 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         }
     })
 
-    server.get('/loader', function(req, res) {
-        res.render(path.join(__dirname, 'public/loader.ejs'), {})
+    server.all('/teamresults', function(req, res) {
+        if(req.method == "POST") {
+            if (req.body.stadiumNameToSearch != "" || typeof req.body.typeOfSearch !== 'undefined' || typeof req.body.league !== 'undefined') {
+                console.log(req.body.league)
+                team.advancedSearchResultsTeams(req.body)
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else if(req.body.teamName === "") {
+                team.getAllTeams()
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else {
+                team.getTeamsByName(req.body.teamName)
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+
+            }
+        }
+        else if (req.method != "GET") {
+            res.end()
+        }
     })
 
-    server.get('/teamresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
+    server.get('/loader', function(req, res) {
+        res.render(path.join(__dirname, 'public/loader.ejs'), {})
     })
 
     server.get('/login', function(req, res) {
@@ -102,16 +142,6 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.get('/signup', function(req, res) {
         res.render(path.join(__dirname, 'public/signup.ejs'), {})
-    })
-
-    //establishes all of the post endpoints.
-
-    /*server.post('/playerresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {user: req.body.playerName})
-    })*/
-
-    server.post('/teamresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
     })
 
     //configures the port number and starts the server.

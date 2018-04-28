@@ -18,7 +18,7 @@ const GET_PLAYERS_ADVANCED_SEARCH_QUERY_BASE = "SELECT players.firstName as firs
                                             + "from players\n"
                                             + "inner join countries on players.nationality=countries.code\n"
                                             + "inner join contract on players.playerID=contract.player_ID\n"
-                                            + "inner join teams on contract.teamID=teams.teamID;"
+                                            + "inner join teams on contract.teamID=teams.teamID\n"
 
 
 
@@ -72,6 +72,12 @@ function getPlayersByName(searchParam) {
     })
 }
 
+function advancedSearchResultsPlayer(params) {
+    return new Promise(function(resolve, reject) {
+        //TODO: finish
+    })
+}
+
 function createPlayer(fname, lname, num, pos, nat, sal, team) {
     return new player(fname, lname, num, pos, nat, sal, team)
 }
@@ -107,5 +113,6 @@ function printInfo(player) {
 module.exports = {
     player,
     getAllPlayers,
-    getPlayersByName
+    getPlayersByName,
+    advancedSearchResultsPlayer
 }
