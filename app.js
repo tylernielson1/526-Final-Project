@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const http = require('http')
 const player = require('./app/player')
 const team = require('./app/team')
+const session = require('express-session')
 const server = express()
 
 var swagger_config = {
@@ -34,10 +35,21 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.use(SwaggerUi(swaggerExpress.runner.swagger))
     server.use(bodyParser.urlencoded({ extended: true }))
 
+    //admin middleware
+    function checkAdminStatus(req, res, next) {
+        
+    }
+
+    /* establishes session */
+    server.use(session({
+        secret: config.app.secret,
+        resave: true,
+        saveUninitialized: false
+    }))
+
     //sets the view engine to use ejs and sets the static directory for css, js, and images.
     server.set('view engine', 'ejs')
     server.use('/static', express.static(path.join(__dirname, 'static')))
-    server.use('../data', express.static(path.join(__dirname, '../../data')))
 
     //establishes all of the get endpoints.
     server.get('/', function(req, res) {
@@ -143,6 +155,29 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.get('/signup', function(req, res) {
         res.render(path.join(__dirname, 'public/signup.ejs'), {})
+    })
+    
+    server.get('/logout', function(req, res, next) {
+        if (req.session) {
+            req.session.destroy(function(err) {
+                if(err) {
+                    return next(err)
+                } else {
+                    return res.redirect('/')
+                }
+            })
+        }
+    })
+
+    server.get('/admin', function(req, res) {
+
+    })
+
+    /* Establishes post endpoints for login and signup */
+    server.post('/register', function(req, res) {
+        console.log(req.body.username)
+        console.log(req.body.password)
+        res.redirect('/')
     })
 
     //configures the port number and starts the server.

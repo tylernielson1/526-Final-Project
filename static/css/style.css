@@ -67,7 +67,11 @@
     padding: 15px;
 }
 
-.bio, .devbio, .playerSearch, .teamSearch {
+.signUpBoxes {
+    font-size: 24px
+}
+
+.bio, .devbio, .playerSearch, .teamSearch, .signUp {
     width: 80%;
     float: left;
     padding: 10px;
