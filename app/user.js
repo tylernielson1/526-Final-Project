@@ -8,7 +8,7 @@ const CREATE_USER_QUERY = "INSERT INTO users(username, password, isAdmin)\n"
 const GET_USERNAMES_QUERY = "SELECT users.username\n"
                             + "FROM users;"
 
-const GET_USER_QUERY = "SELECT users.password, users.isAdmin\n"
+const GET_USER_QUERY = "SELECT users.username, users.password, users.isAdmin\n"
                         + "FROM users\n"
                         + "WHERE users.username = \"?\";"
 
@@ -66,6 +66,11 @@ function checkIfUserExists(username) {
 
 function loginUser(userData) {
     return new Promise(function(resolve, reject) {
+        var flag = checkIfUserExists(userData.username)
+        if (flag == false) {
+            var error = new Error("User does not exist")
+            reject(error)
+        }
         var insert = userData.username
         var sql_query = mysql.format(GET_USER_QUERY, insert)
         sql_query = sql_query.replace(/'/g, "")
@@ -76,11 +81,10 @@ function loginUser(userData) {
             }
             var user = userObject(results[0].username, results[0].password)
             bcrypt.compare(userData.password, user.password, function(err, result) {
-                if (result) {
-                    return resolve(user)
-                } else {
-                    return reject(err)
+                if(err) {
+                    reject(err)
                 }
+                resolve(user)
             })
         })
     })

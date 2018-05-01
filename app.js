@@ -225,7 +225,8 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         .then(user => {
             req.session.admin = user.adminStatus
             req.session.username = user.username
-            console.log("logged in")
+            console.log("logged in as ")
+            console.log(req.session.username)
             res.redirect('/')
         })
         .catch(error => {
