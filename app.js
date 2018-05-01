@@ -37,6 +37,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     //sets the view engine to use ejs and sets the static directory for css, js, and images.
     server.set('view engine', 'ejs')
     server.use('/static', express.static(path.join(__dirname, 'static')))
+    server.use('../data', express.static(path.join(__dirname, '../../data')))
 
     //establishes all of the get endpoints.
     server.get('/', function(req, res) {

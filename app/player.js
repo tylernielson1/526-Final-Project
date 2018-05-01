@@ -1,20 +1,20 @@
 const pool = require('../db/connection')
 const mysql = require('mysql')
 
-const GET_ALL_PLAYERS_QUERY = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.salary as salary, teams.name as team\n"
+const GET_ALL_PLAYERS_QUERY = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.value as salary, teams.name as team, players.photoPath as photoPath\n"
                             + "from players\n"
                             + "inner join countries on players.nationality=countries.code\n"
                             + "inner join contract on players.playerID=contract.player_ID\n"
                             + "inner join teams on contract.teamID=teams.teamID;"
 
-const GET_PLAYERS_BY_NAME_QUERY = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.salary as salary, teams.name as team\n"
+const GET_PLAYERS_BY_NAME_QUERY = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.value as salary, teams.name as team, players.photoPath as photoPath\n"
                                 + "from players\n"
                                 + "inner join countries on players.nationality=countries.code\n"
                                 + "inner join contract on players.playerID=contract.player_ID\n"
                                 + "inner join teams on contract.teamID=teams.teamID\n"
                                 + "where players.firstName LIKE \"%?%\" OR players.lastName like \"%?%\";"
 
-const GET_PLAYERS_ADVANCED_SEARCH_QUERY_BASE = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.salary as salary, teams.name as team\n"
+const GET_PLAYERS_ADVANCED_SEARCH_QUERY_BASE = "SELECT players.firstName as firstName, players.lastName as lastName, players.number as number, players.position as position, countries.name as nationality, contract.value as salary, teams.name as team, players.photoPath as photoPath\n"
                                             + "from players\n"
                                             + "inner join countries on players.nationality=countries.code\n"
                                             + "inner join contract on players.playerID=contract.player_ID\n"
@@ -22,7 +22,7 @@ const GET_PLAYERS_ADVANCED_SEARCH_QUERY_BASE = "SELECT players.firstName as firs
 
 
 
-function player(firstName, lastName, number, position, nationality, salary, team) {
+function player(firstName, lastName, number, position, nationality, salary, team, path) {
     if (firstName == null) {
         this.name = `${lastName}`
     } else if (lastName == null) {
@@ -35,6 +35,7 @@ function player(firstName, lastName, number, position, nationality, salary, team
     this.nationality = nationality
     this.salary = salary
     this.team = team
+    this.path = path
 }
 
 function getAllPlayers() {
@@ -46,7 +47,7 @@ function getAllPlayers() {
             }
             var players = new Array()
             for (var i = 0; i < results.length; i++) {
-                players.push(createPlayer(results[i].firstName, results[i].lastName, results[i].number, results[i].position, results[i].nationality, results[i].salary, results[i].team))
+                players.push(createPlayer(results[i].firstName, results[i].lastName, results[i].number, results[i].position, results[i].nationality, results[i].salary, results[i].team, results[i].photoPath))
             }
             resolve(players)
         })
@@ -65,7 +66,7 @@ function getPlayersByName(searchParam) {
             }
             var players = new Array()
             for (var i = 0; i < results.length; i++) {
-                players.push(createPlayer(results[i].firstName, results[i].lastName, results[i].number, convertPosition(results[i].position), results[i].nationality, results[i].salary, results[i].team))
+                players.push(createPlayer(results[i].firstName, results[i].lastName, results[i].number, convertPosition(results[i].position), results[i].nationality, results[i].salary, results[i].team, results[i].photoPath))
             }
             resolve(players)
         })
@@ -78,8 +79,8 @@ function advancedSearchResultsPlayer(params) {
     })
 }
 
-function createPlayer(fname, lname, num, pos, nat, sal, team) {
-    return new player(fname, lname, num, pos, nat, sal, team)
+function createPlayer(fname, lname, num, pos, nat, sal, team, path) {
+    return new player(fname, lname, num, pos, nat, sal, team, path)
 }
 
 function convertPosition(position) {

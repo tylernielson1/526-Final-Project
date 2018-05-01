@@ -109,13 +109,13 @@
 		<div class="row" style="margin-top: 10px">
 			<div class="filler2"></div>
 			<div class="resultsPlayer">
-				<img class="playerPhoto" src="../static/images/unknown_portrait.png" alt="Photo not present">
+				<img class="playerPhoto" src="<%= players[i].path %>" alt="Photo not present">
 				<%= players[i].name %> <br>
 				Plays On: <%= players[i].team %> <br>
 				Jersey Number: <%= players[i].number %> <br>
 				Position: <%= players[i].position %> <br>
 				Nationality: <%= players[i].nationality %><br>
-				Salary: $<%= players[i].salary %>
+				Transfer Market Value: $<%= players[i].salary %>
 			</div>
 			<div class="filler2"></div>
 		</div>
