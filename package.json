@@ -9,9 +9,11 @@
   "license": "MIT",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "mysql": "^2.15.0",
     "npm": "^5.8.0",
     "swagger": "^0.7.5",

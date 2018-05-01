@@ -14,8 +14,8 @@
 			<a href="/" id="left">Home</a>
 			<a class="active" href="searchplayers" id="left">Search Players</a>
 			<a href="searchteams" id="left">Search Teams</a>
-			<a href="#" id="right">Login</a>
-			<a href="#" id="right">Sign Up</a>
+			<a href="login" id="right">Login</a>
+			<a href="signup" id="right">Sign Up</a>
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
@@ -47,9 +47,9 @@
 						<legend>Team</legend>
 						<select name="teamSelector">
 							<option value="">Select Team</option>
-							<% teams.forEach(function(team) { %>
-								<option value="<%= team.name %>"><%= team.name %></option>
-							<% }) %>
+							<% for(var i = 0; i < teams.length; i++) { %>
+								<option value="<%= teams[i].name %>"><%= teams[i].name %></option>
+							<% } %>
 						</select>
 					</fieldset>
 				</div>
@@ -84,9 +84,9 @@
 						<legend>Nationality</legend>
 						<select name="nationalitySelector">
 							<option value="">Select Nationality</option>
-							<% nations.forEach(function(nation) { %>
-								<option value="<%= nation.name %>"><%= nation.name %></option>
-							<% }) %>
+							<% for(var i = 0; i < nations.length; i++) { %>
+								<option value="<%= nations[i].name %>"><%= nations[i].name %></option>
+							<% } %>
 						</select>
 					</fieldset>
 				</div>
@@ -105,20 +105,21 @@
 		</div>
 
 		<hr>
-
+		<% for(var i = 0; i < players.length; i++) { %>
 		<div class="row" style="margin-top: 10px">
 			<div class="filler2"></div>
 			<div class="resultsPlayer">
-				<img class="playerPhoto" src="../static/images/unknown_portrait.png" alt="Photo not present">
-				Player1 <br>
-				Plays On: USA <br>
-				Jersey Number: 69 <br>
-				Position: Goalkeeper <br>
-				Nationality: USA <br>
-				Salary: Yes
+				<img class="playerPhoto" src="<%= players[i].path %>" alt="Photo not present">
+				<%= players[i].name %> <br>
+				Plays On: <%= players[i].team %> <br>
+				Jersey Number: <%= players[i].number %> <br>
+				Position: <%= players[i].position %> <br>
+				Nationality: <%= players[i].nationality %><br>
+				Transfer Market Value: $<%= players[i].salary %>
 			</div>
 			<div class="filler2"></div>
 		</div>
+		<% } %>
 
 		<hr>
 		

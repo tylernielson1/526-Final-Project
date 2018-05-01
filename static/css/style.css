@@ -62,12 +62,16 @@
 }
 
 .filler2 {
-    width: 35%;
+    width: 32.5%;
     float: left;
     padding: 15px;
 }
 
-.bio, .devbio, .playerSearch, .teamSearch {
+.signUpBoxes {
+    font-size: 24px
+}
+
+.bio, .devbio, .playerSearch, .teamSearch, .signUp {
     width: 80%;
     float: left;
     padding: 10px;
@@ -76,7 +80,7 @@
 }
 
 .resultsPlayer, .resultsTeam {
-    width: 30%;
+    width: 35%;
     float: left;
     padding: 2px;
     font-size: 18px;

@@ -14,8 +14,8 @@
 			<a href="/" id="left">Home</a>
 			<a href="searchplayers" id="left">Search Players</a>
 			<a class="active" href="searchteams" id="left">Search Teams</a>
-			<a href="#" id="right">Login</a>
-			<a href="#" id="right">Sign Up</a>
+			<a href="login" id="right">Login</a>
+			<a href="signup" id="right">Sign Up</a>
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
@@ -56,9 +56,9 @@
 				<div class="teamSearchCol">
 					<fieldset id="league">
 						<legend>League</legend>
-						<input type="checkbox" name="mls" value="mls"> Major League Soccer <br>
-						<input type="checkbox" name="premier" value="premier"> Premier League <br>
-						<input type="checkbox" name="bundes" value="bundesliga"> Bundesliga
+						<input type="checkbox" name="league" value="mls"> Major League Soccer <br>
+						<input type="checkbox" name="league" value="premier"> Premier League <br>
+						<input type="checkbox" name="league" value="bundesliga"> Bundesliga
 					</fieldset>
 				</div>
 				<div class="teamSearchCol">
@@ -82,18 +82,19 @@
 		</div>
 
 		<hr>
-
+		<% for(var i = 0; i < teams.length; i++) { %>
 		<div class="row" style="margin-top: 10px">
 			<div class="filler2"></div>
 			<div class="resultsTeam">
-				<img class="teamPhoto" src="../static/images/unknown_portrait.png" alt="Photo not present">
-				TeamName FC <br>
-				Founded in: 1969 <br>
-				League: MLS <br>
-				Home Stadium: Children's Mercy Park
+				<img class="teamPhoto" src="<%= teams[i].path %>" alt="Photo not present">
+				<%= teams[i].name %> <br>
+				Founded in: <%= teams[i].foundedIn %> <br>
+				League: <%= teams[i].league %> <br>
+				Home Stadium: <%= teams[i].stadium %>
 			</div>
 			<div class="filler2"></div>
 		</div>
+		<% } %>
 
 		<hr>
 
@@ -126,7 +127,7 @@
 				}
 			}
 
-			function disableSalaryTextBox() {
+			function disableYearTextBox() {
 				if(!document.getElementById("between").checked) {
 					document.getElementById("year2").disabled = true;
 				} else {

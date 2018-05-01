@@ -1,0 +1,85 @@
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			Sign Up - Soccer Application
+		</title>
+	</head>
+
+	<body>
+		<div class="customNavBar" id="myNavBar">
+			<a href="/" id="left">Home</a>
+			<a href="searchplayers" id="left">Search Players</a>
+			<a href="searchteams" id="left">Search Teams</a>
+			<a href="login" id="right">Login</a>
+			<a href="signup" id="right">Sign Up</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
+		</div>
+
+		<header class="myHeader">
+			<div>
+				<h1 style="font-family:'Ubuntu',sans-serif;">
+					Sign Up
+				</h1>
+			</div>
+        </header>
+
+        <form class="signUpAccount" action="/register" method="post">
+            <div class="row">
+                <div class="filler"></div>
+                <div class="signUp">
+                    <fieldset class="signUpBoxes" style="border: 0">
+                        Username: <input type="text" name="username"> <br>
+                        Password: <input type="password" name="password"> <br>
+                        Confirm Password: <input type="password" name="confirmPassword"> <br>
+                        <input type="submit" value="Register">
+                    </fieldset>
+                </div>
+                <div class="filler"></div>
+            </div>
+        </form>
+
+        <hr>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+
+			function disableYearTextBox() {
+				if(!document.getElementById("between").checked) {
+					document.getElementById("year2").disabled = true;
+				} else {
+					document.getElementById("year2").disabled = false;
+				}
+			}
+		</script>
+
+    </body>
+</html>

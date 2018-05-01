@@ -5,6 +5,9 @@ const config = require('./config/config')
 const path = require('path')
 const bodyParser = require('body-parser')
 const http = require('http')
+const player = require('./app/player')
+const team = require('./app/team')
+const session = require('express-session')
 const server = express()
 
 var swagger_config = {
@@ -32,6 +35,18 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.use(SwaggerUi(swaggerExpress.runner.swagger))
     server.use(bodyParser.urlencoded({ extended: true }))
 
+    //admin middleware
+    function checkAdminStatus(req, res, next) {
+        
+    }
+
+    /* establishes session */
+    server.use(session({
+        secret: config.app.secret,
+        resave: true,
+        saveUninitialized: false
+    }))
+
     //sets the view engine to use ejs and sets the static directory for css, js, and images.
     server.set('view engine', 'ejs')
     server.use('/static', express.static(path.join(__dirname, 'static')))
@@ -41,11 +56,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/index.ejs'), {})
     })
 
-    server.get('/playerinfo', function(req, res) {
+    server.get('/player-info/:player', function(req, res) {
         res.render(path.join(__dirname, 'public/player.ejs'), {})
     })
 
-    server.get('/teaminfo', function(req, res) {
+    server.get('team-info/:team', function(req, res) {
         res.render(path.join(__dirname, 'public/team.ejs'), {})
     })
 
@@ -59,20 +74,79 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.all('/playerresults', function(req, res) {
         if(req.method == "POST") {
-            console.log(req.body.playerName)
+            if(req.body.playerName === "") {
+                player.getAllPlayers()
+                .then(players => {
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else {
+                player.getPlayersByName(req.body.playerName)
+                .then(players => {
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
         }
         else if (req.method != "GET") {
             res.end();
         }
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams})
+    })
+
+    server.all('/teamresults', function(req, res) {
+        if(req.method == "POST") {
+            if (req.body.stadiumNameToSearch != "" || typeof req.body.typeOfSearch !== 'undefined' || typeof req.body.league !== 'undefined') {
+                console.log(req.body.league)
+                team.advancedSearchResultsTeams(req.body)
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else if(req.body.teamName === "") {
+                team.getAllTeams()
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else {
+                team.getTeamsByName(req.body.teamName)
+                .then(teams => {
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+
+            }
+        }
+        else if (req.method != "GET") {
+            res.end()
+        }
     })
 
     server.get('/loader', function(req, res) {
         res.render(path.join(__dirname, 'public/loader.ejs'), {})
-    })
-
-    server.get('/teamresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
     })
 
     server.get('/login', function(req, res) {
@@ -82,15 +156,28 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.get('/signup', function(req, res) {
         res.render(path.join(__dirname, 'public/signup.ejs'), {})
     })
+    
+    server.get('/logout', function(req, res, next) {
+        if (req.session) {
+            req.session.destroy(function(err) {
+                if(err) {
+                    return next(err)
+                } else {
+                    return res.redirect('/')
+                }
+            })
+        }
+    })
 
-    //establishes all of the post endpoints.
+    server.get('/admin', function(req, res) {
 
-    /*server.post('/playerresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/playerresults.ejs'), {user: req.body.playerName})
-    })*/
+    })
 
-    server.post('/teamresults', function(req, res) {
-        res.render(path.join(__dirname, 'public/teamresults.ejs'), {})
+    /* Establishes post endpoints for login and signup */
+    server.post('/register', function(req, res) {
+        console.log(req.body.username)
+        console.log(req.body.password)
+        res.redirect('/')
     })
 
     //configures the port number and starts the server.
