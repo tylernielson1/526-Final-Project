@@ -7,7 +7,9 @@ const bodyParser = require('body-parser')
 const http = require('http')
 const player = require('./app/player')
 const team = require('./app/team')
+const user = require('./app/user')
 const session = require('express-session')
+const bcrypt = require('bcrypt')
 const server = express()
 
 var swagger_config = {
@@ -36,8 +38,13 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.use(bodyParser.urlencoded({ extended: true }))
 
     //admin middleware
-    function checkAdminStatus(req, res, next) {
-        
+    function requiresAdmin(req, res, next) {
+        if(!req.session.admin && !req.session.username) {
+            res.statusCode = 401
+            res.send('You must be logged in to view this page.')
+        } else {
+            next()
+        }
     }
 
     /* establishes session */
@@ -73,7 +80,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.all('/playerresults', function(req, res) {
-        if(req.method == "POST") {
+        if(req.method == "POST") { 
             if(req.body.playerName === "") {
                 player.getAllPlayers()
                 .then(players => {
@@ -169,15 +176,63 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         }
     })
 
-    server.get('/admin', function(req, res) {
+    server.get('/admin', requiresAdmin, function(req, res) {
 
     })
 
     /* Establishes post endpoints for login and signup */
     server.post('/register', function(req, res) {
-        console.log(req.body.username)
-        console.log(req.body.password)
-        res.redirect('/')
+        var userData
+        if (req.body.password !== req.body.confirmPassword && req.body.password !== "" && req.body.confirmPassword !== "") {
+            var error = new Error("Passwords do not match.")
+            error.statusCode = 400
+            res.redirect('/signup')
+        }
+
+        if (req.body.username && req.body.password && req.body.confirmPassword) {
+            userData = {
+                username: req.body.username,
+                password: req.body.password
+            }
+        }
+        user.createNewUser(userData)
+        .then(user => {
+            req.session.admin = user.adminStatus
+            req.session.username = user.username
+            res.redirect('/')
+        })
+        .catch(error => {
+            console.error(error)
+            res.statusCode = 404
+            res.redirect('/signup')
+        })
+
+    })
+
+    server.post('/checklogin', function(req, res) {
+        console.log("logging in")
+        var userData
+        if (typeof req.body.username === 'undefined' || typeof req.body.password === 'undefined') {
+            var error = new Error("Username or password box is empty.")
+            error.statusCode = 400
+            res.redirect('/login')
+        }
+        userData = {
+            username: req.body.username,
+            password: req.body.password
+        }
+        user.loginUser(userData)
+        .then(user => {
+            req.session.admin = user.adminStatus
+            req.session.username = user.username
+            console.log("logged in")
+            res.redirect('/')
+        })
+        .catch(error => {
+            console.error(error)
+            res.statusCode = 404
+            res.redirect('/login')
+        })
     })
 
     //configures the port number and starts the server.
