@@ -93,7 +93,6 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     server.all('/playerresults', isLoggedIn, function(req, res) {
         if(req.method == "POST") {
-            
             if (typeof req.body.typeOfSearch !== 'undefined' || typeof req.body.positionPlayed !== 'undefined' || req.body.playerNumber != "" || req.body.teamSelector != "" || req.body.nationalitySelector != "") {
                 console.log(req.body.nationalitySelector)
                 player.advancedSearchResultsPlayer(req.body)
