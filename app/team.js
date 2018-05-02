@@ -28,14 +28,14 @@ const YEAR_FOUNDED_EQUAL_TO_QUERY_PORTION = "teams.yearFounded = ?"
 const YEAR_FOUNDED_BETWEEN_QUERY_PORTION = "teams.yearFounded BETWEEN ? AND ?"
 
 /* portions of queries to assemble advanced search - League */
-const ONE_LEAGUE_QUERY_PORTION = "league LIKE \"%?%\""
+const ONE_LEAGUE_QUERY_PORTION = "leagues.name LIKE \"%?%\""
 
-const TWO_LEAGUE_QUERY_PORTION = "league LIKE \"%?%\" OR league LIKE \"%?%\""
+const TWO_LEAGUE_QUERY_PORTION = "leagues.name LIKE \"%?%\" OR league LIKE \"%?%\""
 
-const THREE_LEAGUE_QUERY_PORTION = "league LIKE \"%?%\" OR league LIKE \"%?%\" OR league LIKE \"%?%\""
+const THREE_LEAGUE_QUERY_PORTION = "leagues.name LIKE \"%?%\" OR league LIKE \"%?%\" OR league LIKE \"%?%\""
 
 /* portions of queries to assemble advanced search - Stadium */
-const STADIUM_NAME_QUERY_PORTION = "stadium LIKE \"%?%\""
+const STADIUM_NAME_QUERY_PORTION = "stadiums.name LIKE \"%?%\""
 
 function team(teamName, foundedIn, league, stadium, path) {
     this.name = teamName
@@ -81,26 +81,27 @@ function getTeamsByName(searchParam) {
 
 function advancedSearchResultsTeams(params) {
     return new Promise(function(resolve, reject) {
-        var sql_query = ""
+        var sql_query = GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE
         var typeOfSearchFlag = false
         var leagueFlag = false
         var stadiumFlag = false
+        console.log(sql_query)
         if (typeof params.typeOfSearch !== 'undefined') {
             typeOfSearchFlag = true
             if (params.typeOfSearch === "greaterThan") {
-                sql_query = GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE + YEAR_FOUNDED_GREATER_THAN_QUERY_PORTION
+                sql_query += YEAR_FOUNDED_GREATER_THAN_QUERY_PORTION
                 sql_query = mysql.format(sql_query, params.foundedYear1)
             }
             else if(params.typeOfSearch === "equalTo") {
-                sql_query = GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE + YEAR_FOUNDED_EQUAL_TO_QUERY_PORTION
+                sql_query += YEAR_FOUNDED_EQUAL_TO_QUERY_PORTION
                 sql_query = mysql.format(sql_query, params.foundedYear1)
             }
             else if(params.typeOfSearch === "lessThan") {
-                sql_query = GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE + YEAR_FOUNDED_LESS_THAN_QUERY_PORTION
+                sql_query += YEAR_FOUNDED_LESS_THAN_QUERY_PORTION
                 sql_query = mysql.format(sql_query, params.foundedYear1)
             }
             else if(params.typeOfSearch === "between") {
-                sql_query = GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE + YEAR_FOUNDED_BETWEEN_QUERY_PORTION
+                sql_query += YEAR_FOUNDED_BETWEEN_QUERY_PORTION
                 var inserts = [params.foundedYear1, params.foundedYear2]
                 sql_query = mysql.format(sql_query, inserts)
             }
@@ -134,7 +135,7 @@ function advancedSearchResultsTeams(params) {
             sql_query = mysql.format(sql_query, params.stadiumNameToSearch)
         }
         if (typeOfSearchFlag || leagueFlag || stadiumFlag) sql_query += ");"
-        else sql_query += ";"
+        else sql_query += ");"
         sql_query = sql_query.replace(/'/g, "")
         // for testing, remove later
         console.log(sql_query)

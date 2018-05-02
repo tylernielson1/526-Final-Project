@@ -47,6 +47,18 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         }
     }
 
+    function isLoggedIn(req, res, next) {
+        var loggedIn = false
+        if(!req.session.username) {
+            req.loggedIn = loggedIn
+            next()
+        } else {
+            loggedIn = true
+            req.loggedIn = loggedIn
+            next()
+        }
+    }
+
     /* establishes session */
     server.use(session({
         secret: config.app.secret,
@@ -59,8 +71,8 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.use('/static', express.static(path.join(__dirname, 'static')))
 
     //establishes all of the get endpoints.
-    server.get('/', function(req, res) {
-        res.render(path.join(__dirname, 'public/index.ejs'), {})
+    server.get('/', isLoggedIn, function(req, res) {
+        res.render(path.join(__dirname, 'public/index.ejs'), {loggedIn: req.loggedIn})
     })
 
     server.get('/player-info/:player', function(req, res) {
@@ -71,20 +83,33 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/team.ejs'), {})
     })
 
-    server.get('/searchplayers', function(req, res) {
-        res.render(path.join(__dirname, 'public/searchplayer.ejs'), {nations: nations, teams: teams})
+    server.get('/searchplayers', isLoggedIn, function(req, res) {
+        res.render(path.join(__dirname, 'public/searchplayer.ejs'), {loggedIn: req.loggedIn, nations: nations, teams: teams})
     })
 
-    server.get('/searchteams', function(req, res) {
-        res.render(path.join(__dirname, 'public/searchteam.ejs'), {})
+    server.get('/searchteams', isLoggedIn, function(req, res) {
+        res.render(path.join(__dirname, 'public/searchteam.ejs'), {loggedIn: req.loggedIn})
     })
 
-    server.all('/playerresults', function(req, res) {
-        if(req.method == "POST") { 
-            if(req.body.playerName === "") {
+    server.all('/playerresults', isLoggedIn, function(req, res) {
+        if(req.method == "POST") {
+            
+            if (typeof req.body.typeOfSearch !== 'undefined' || typeof req.body.positionPlayed !== 'undefined' || req.body.playerNumber != "" || req.body.teamSelector != "" || req.body.nationalitySelector != "") {
+                console.log(req.body.nationalitySelector)
+                player.advancedSearchResultsPlayer(req.body)
+                .then(players => {
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {loggedIn: req.loggedIn, nations: nations, teams: teams, players: players})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res.statusCode = 404
+                    res.end()
+                })
+            }
+            else if(req.body.playerName === "") {
                 player.getAllPlayers()
                 .then(players => {
-                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {loggedIn: req.loggedIn, nations: nations, teams: teams, players: players})
                 })
                 .catch(error => {
                     console.error(error)
@@ -95,7 +120,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
             else {
                 player.getPlayersByName(req.body.playerName)
                 .then(players => {
-                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {nations: nations, teams: teams, players: players})
+                    res.render(path.join(__dirname, 'public/playerresults.ejs'), {loggedIn: req.loggedIn, nations: nations, teams: teams, players: players})
                 })
                 .catch(error => {
                     console.error(error)
@@ -109,13 +134,13 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         }
     })
 
-    server.all('/teamresults', function(req, res) {
+    server.all('/teamresults', isLoggedIn, function(req, res) {
         if(req.method == "POST") {
             if (req.body.stadiumNameToSearch != "" || typeof req.body.typeOfSearch !== 'undefined' || typeof req.body.league !== 'undefined') {
                 console.log(req.body.league)
                 team.advancedSearchResultsTeams(req.body)
                 .then(teams => {
-                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {loggedIn: req.loggedIn, teams: teams})
                 })
                 .catch(error => {
                     console.error(error)
@@ -126,7 +151,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
             else if(req.body.teamName === "") {
                 team.getAllTeams()
                 .then(teams => {
-                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {loggedIn: req.loggedIn, teams: teams})
                 })
                 .catch(error => {
                     console.error(error)
@@ -137,7 +162,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
             else {
                 team.getTeamsByName(req.body.teamName)
                 .then(teams => {
-                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {teams: teams})
+                    res.render(path.join(__dirname, 'public/teamresults.ejs'), {loggedIn: req.loggedIn, teams: teams})
                 })
                 .catch(error => {
                     console.error(error)
@@ -163,6 +188,10 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     server.get('/signup', function(req, res) {
         res.render(path.join(__dirname, 'public/signup.ejs'), {})
     })
+
+    server.get('/profile', function(req, res) {
+        res.render(path.join(__dirname, 'public/profile.ejs'), {})
+    })
     
     server.get('/logout', function(req, res, next) {
         if (req.session) {
@@ -177,7 +206,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.get('/admin', requiresAdmin, function(req, res) {
-
+        res.render(path.join(__dirname, 'public/admin.ejs'), {})
     })
 
     /* Establishes post endpoints for login and signup */

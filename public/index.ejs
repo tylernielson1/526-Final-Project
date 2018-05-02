@@ -14,8 +14,13 @@
 			<a class="active" href="/" id="left">Home</a>
 			<a href="searchplayers" id="left">Search Players</a>
 			<a href="searchteams" id="left">Search Teams</a>
+			<% if (!loggedIn) { %>
 			<a href="login" id="right">Login</a>
 			<a href="signup" id="right">Sign Up</a>
+			<% } else { %>
+			<a href="logout" id="right">Log Out</a>
+			<a href="profile" id="right">Profile</a>
+			<% } %>
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
