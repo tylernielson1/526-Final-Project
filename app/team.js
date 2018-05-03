@@ -18,6 +18,9 @@ const GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE = "SELECT teams.teamID, teams.name as
                                             + "inner join stadiums on teams.homeStadium=stadiums.stadiumID\n"
                                             + "WHERE ("
 
+const DELETE_TEAM_QUERY = "DELETE FROM teams\n"
+                        + "WHERE teams.teamID = ?;"
+
 /* portions of queries to assemble advanced search - Year Founded */
 const YEAR_FOUNDED_LESS_THAN_QUERY_PORTION = "teams.yearFounded < ?"
 
@@ -158,9 +161,26 @@ function createTeam(id, name, yearFounded, leagueName, stadiumName, path) {
     return new team(id, name, yearFounded, leagueName, stadiumName, path)
 }
 
+function deleteTeamFromDatabase(teamID) {
+    return new Promise(function(resolve, reject) {
+        var inserts = teamID
+        var sql_query = mysql.format(DELETE_TEAM_QUERY, inserts)
+        sql_query = sql_query.replace(/'/g, "")
+        pool.query(sql_query, function(error, results, fields) {
+            if (error) {
+                console.error("Error submitting database query.\n" + error)
+                reject(error)
+            }
+            resolve()
+        })
+    })
+}
+
 module.exports = {
     team,
     getAllTeams,
     getTeamsByName,
-    advancedSearchResultsTeams
+    advancedSearchResultsTeams,
+    createTeam,
+    deleteTeamFromDatabase
 }

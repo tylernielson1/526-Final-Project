@@ -2,6 +2,7 @@ const pool = require("../db/connection")
 const mysql = require("mysql")
 const bcrypt = require("bcrypt")
 const player = require("./player")
+const team = require("./team")
 
 const CREATE_USER_QUERY = "INSERT INTO users(username, password, isAdmin)\n"
                         + "VALUES(?, ?, 0);"
@@ -36,7 +37,11 @@ const GET_FAVORITE_PLAYERS_QUERY = "SELECT players.playerID, players.firstName a
                                     + "inner join teams on contract.teamID=teams.teamID\n"
                                     + "WHERE players.playerID in (SELECT user_favorite_players.favoritePlayer from user_favorite_players where user_favorite_players.userID = ?);"
 
-const GET_FAVORITE_TEAMS_QUERY = ""
+const GET_FAVORITE_TEAMS_QUERY = "SELECT teams.teamID, teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
+                                + "from teams\n"
+                                + "inner join leagues on teams.playsInLeague=leagues.leagueID\n"
+                                + "inner join stadiums on teams.homeStadium=stadiums.stadiumID\n"
+                                + "WHERE teams.teamID in (SELECT user_favorite_teams.favoriteTeam from user_favorite_teams where user_favorite_teams.userID = ?);"
 
 function user(username, password, adminStatus, id) {
     this.username = username
@@ -248,7 +253,19 @@ function getFavoriteTeams(username) {
         getUserID(username)
         .then(userID => {
             var inserts = userID
-            var sql_query
+            var sql_query = mysql.format(GET_FAVORITE_TEAMS_QUERY, inserts)
+            sql_query = sql_query.replace(/'/g, "")
+            pool.query(sql_query, function(error, results, fields) {
+                if (error) {
+                    console.error("Error submitting database query.\n" + error)
+                    reject(error)
+                }
+                var teams = new Array()
+                for (var i = 0; i < results.length; i++) {
+                    teams.push(team.createTeam(results[i].teamID, results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
+                }
+                resolve(teams)
+            })
         })
     })
 }

@@ -31,33 +31,39 @@
             <div class="flexFiller"></div>
             <div class="column">
                 <h3 style="text-align: center">All Players</h3>
-                <a href="addPlayer">Add a player</a>
+                <h4 style="text-align: center"><a href="addPlayer">Add a player</a></h4>
+				<% for(var i = 0; i < players.length; i++) { %>
                 <div class="myFavoritePlayers">
-                    <img class="playerPhoto" src="" alt="Photo not present">
-                    x <br>
-                    Founded in: x <br>
-                    League: x <br>
-                    Home Stadium: x <br>
+                    <img class="playerPhoto" src="<%= players[i].path %>" alt="Photo not present">
+                    <%= players[i].name %> <br>
+                    Plays On: <%= players[i].team %> <br>
+                    Jersey Number: <%= players[i].number %> <br>
+                    Position: <%= players[i].position %> <br>
+                    Nationality: <%= players[i].nationality %><br>
+                    Transfer Market Value: $<%= players[i].salary %>
                     <form action="/deletePlayer" method="POST">
-                        <input type="hidden" name="playerID" value="playerID">
-                        <input type="submit" value="Delete Player">
+                        <input type="hidden" name="playerID" value="<%= players[i].playerID %>">
+                        <input type="submit" value="Delete player from database">
                     </form>
                 </div>
+                <% } %>
             </div>
             <div class="column">
                 <h3 style="text-align: center">All Teams</h3>
-                <a href="addTeam">Add a team</a>
+                <h4 style="text-align: center"><a href="addTeam">Add a team</a></h4>
+                <% for(var i = 0; i < teams.length; i++) { %>
                 <div class="myFavoriteTeams">
-                    <img class="teamPhoto" src="" alt="Photo not present">
-                    y <br>
-                    Founded in: y <br>
-                    League: y <br>
-                    Home Stadium: y <br>
+                    <img class="teamPhoto" src="<%= teams[i].path %>" alt="Photo not present">
+                    <%= teams[i].name %> <br>
+                    Founded in: <%= teams[i].foundedIn %> <br>
+                    League: <%= teams[i].league %> <br>
+                    Home Stadium: <%= teams[i].stadium %> <br>
                     <form action="/deleteTeam" method="POST">
-                        <input type="hidden" name="teamID" value="teamID">
-                        <input type="submit" value="Delete Team">
+                        <input type="hidden" name="teamID" value="<%= teams[i].teamID %>">
+                        <input type="submit" value="Delete team from database">
                     </form>
                 </div>
+                <% } %>
             </div>
             <div class="flexFiller"></div>
         </div>

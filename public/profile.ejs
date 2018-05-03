@@ -48,14 +48,20 @@
 				<% } %>
             </div>
             <div class="column">
-                <h3 style="text-align: center">Favorite Teams</h3>
+				<h3 style="text-align: center">Favorite Teams</h3>
+				<% for(var i = 0; i < teams.length; i++) { %>
                 <div class="myFavoriteTeams">
-                    <img class="teamPhoto" src="" alt="Photo not present">
-                    y <br>
-                    Founded in: y <br>
-                    League: y <br>
-                    Home Stadium: y
-                </div>
+					<img class="teamPhoto" src="<%= teams[i].path %>" alt="Photo not present">
+					<%= teams[i].name %> <br>
+					Founded in: <%= teams[i].foundedIn %> <br>
+					League: <%= teams[i].league %> <br>
+					Home Stadium: <%= teams[i].stadium %> <br>
+					<form action="/deleteFavoriteTeam" method="POST">
+						<input type="hidden" name="teamID" value="<%= teams[i].teamID %>">
+						<input type="submit" value="Delete team from favorites">
+					</form>
+				</div>
+				<% } %>
             </div>
             <div class="flexFiller"></div>
         </div>

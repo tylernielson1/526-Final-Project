@@ -21,6 +21,9 @@ const GET_PLAYERS_ADVANCED_SEARCH_QUERY_BASE = "SELECT players.playerID, players
                                             + "inner join teams on contract.teamID=teams.teamID\n"
                                             + "WHERE ("
 
+const DELETE_PLAYER_QUERY = "DELETE FROM players\n"
+                            + "WHERE players.playerID = ?;"
+
 /* portions of queries to assemble advanced search - Team Name */
 const TEAM_QUERY_PORTION = "teams.name = \"?\""
 
@@ -201,6 +204,21 @@ function advancedSearchResultsPlayer(params) {
     })
 }
 
+function deletePlayerFromDatabase(playerID) {
+    return new Promise(function(resolve, reject) {
+        var inserts = playerID
+        var sql_query = mysql.format(DELETE_PLAYER_QUERY, inserts)
+        sql_query = sql_query.replace(/'/g, "")
+        pool.query(sql_query, function(error, results, fields) {
+            if (error) {
+                console.error("Error submitting database query.\n" + error)
+                reject(error)
+            }
+            resolve()
+        })
+    })
+}
+
 function createPlayer(id, fname, lname, num, pos, nat, sal, team, path) {
     return new player(id, fname, lname, num, pos, nat, sal, team, path)
 }
@@ -239,5 +257,6 @@ module.exports = {
     getPlayersByName,
     advancedSearchResultsPlayer,
     createPlayer,
-    convertPosition
+    convertPosition,
+    deletePlayerFromDatabase
 }

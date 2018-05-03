@@ -41,7 +41,7 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     function requiresAdmin(req, res, next) {
         if(!req.session.admin && !req.session.username) {
             res.statusCode = 401
-            res.send('You must be logged in to view this page.')
+            res.send('You must be an administrator to view this page.')
         } else {
             next()
         }
@@ -195,7 +195,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
             user.getFavoritePlayers(req.session.username)
             .then(players => {
                 favoritePlayers = players
-                res.render(path.join(__dirname, 'public/profile.ejs'), {players: players})
+                user.getFavoriteTeams(req.session.username)
+                .then(teams => {
+                    favoriteTeams = teams
+                    res.render(path.join(__dirname, 'public/profile.ejs'), {players: favoritePlayers, teams: favoriteTeams})
+                })
             })
             .catch(error => {
                 console.error(error)
@@ -219,7 +223,17 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.get('/admin', requiresAdmin, function(req, res) {
-        res.render(path.join(__dirname, 'public/admin.ejs'), {})
+        var allPlayers
+        var allTeams
+        player.getAllPlayers()
+        .then(players => {
+            allPlayers = players
+            team.getAllTeams()
+            .then(teams => {
+                allTeams = teams
+                res.render(path.join(__dirname, 'public/admin.ejs'), {players: allPlayers, teams: allTeams})
+            })
+        })
     })
 
     /* Establishes post endpoints for login and signup */
@@ -278,17 +292,27 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
 
     /* Establishes post endpoints for deleting players and teams */
     server.post('/deletePlayer', function(req, res) {
-
+        player.deletePlayerFromDatabase(req.body.playerID)
+        .then(x => {
+            res.redirect('/admin')
+        })
+        .catch(error => {
+            console.log(error)
+        })
     })
 
     server.post('/deleteTeam', function(req, res) {
-
+        team.deleteTeamFromDatabase(req.body.teamID)
+        .then(x => {
+            res.redirect('/admin')
+        })
+        .catch(error => {
+            console.log(error)
+        })
     })
 
     /* Establishes post endpoints for adding favorite players */
     server.post('/addFavoritePlayer', function(req, res) {
-        console.log(req.session.username)
-        console.log(req.body.playerID)
         user.addFavoritePlayer(req.session.username, req.body.playerID)
         .then(x => {
             res.redirect('/profile')
@@ -299,7 +323,6 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
     })
 
     server.post('/addFavoriteTeam', function(req, res) {
-        console.log(req.body.teamID)
         user.addFavoriteTeam(req.session.username, req.body.teamID)
         .then(x => {
             res.redirect('/profile')
