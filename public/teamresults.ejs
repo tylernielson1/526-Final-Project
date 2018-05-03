@@ -14,8 +14,13 @@
 			<a href="/" id="left">Home</a>
 			<a href="searchplayers" id="left">Search Players</a>
 			<a class="active" href="searchteams" id="left">Search Teams</a>
+			<% if (!loggedIn) { %>
 			<a href="login" id="right">Login</a>
 			<a href="signup" id="right">Sign Up</a>
+			<% } else { %>
+			<a href="logout" id="right">Log Out</a>
+			<a href="profile" id="right">Profile</a>
+			<% } %>
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
 		</div>
 
@@ -56,9 +61,9 @@
 				<div class="teamSearchCol">
 					<fieldset id="league">
 						<legend>League</legend>
-						<input type="checkbox" name="league" value="mls"> Major League Soccer <br>
-						<input type="checkbox" name="league" value="premier"> Premier League <br>
-						<input type="checkbox" name="league" value="bundesliga"> Bundesliga
+						<input type="checkbox" name="league" value="Major League Soccer"> Major League Soccer <br>
+						<input type="checkbox" name="league" value="Premier Leaguer"> Premier League <br>
+						<input type="checkbox" name="league" value="Bundesliga"> Bundesliga
 					</fieldset>
 				</div>
 				<div class="teamSearchCol">
@@ -90,7 +95,13 @@
 				<%= teams[i].name %> <br>
 				Founded in: <%= teams[i].foundedIn %> <br>
 				League: <%= teams[i].league %> <br>
-				Home Stadium: <%= teams[i].stadium %>
+				Home Stadium: <%= teams[i].stadium %> <br>
+				<% if (loggedIn) { %>
+				<form action="/addFavoriteTeam" method="POST">
+					<input type="hidden" name="teamID" value="<%= teams[i].teamID %>">
+					<input type="submit" value="Add team to favorites">
+				</form>
+				<% } %>
 			</div>
 			<div class="filler2"></div>
 		</div>

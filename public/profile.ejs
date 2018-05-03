@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			Your Profile - Soccer Application
+		</title>
+	</head>
+
+	<body>
+		<div class="customNavBar" id="myNavBar">
+			<a href="/" id="left">Home</a>
+			<a href="searchplayers" id="left">Search Players</a>
+			<a href="searchteams" id="left">Search Teams</a>
+			<a href="logout" id="right">Log Out</a>
+			<a class="active" href="profile" id="right">Profile</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
+		</div>
+
+		<header class="myHeader">
+			<div>
+				<h1 style="font-family:'Ubuntu',sans-serif;">
+					Your Profile
+				</h1>
+			</div>
+        </header>
+
+        <div class="favorites" style="margin-top: 10px">
+            <div class="flexFiller"></div>
+            <div class="column">
+				<h3 style="text-align: center">Favorite Players</h3>
+				<% for(var i = 0; i < players.length; i++) { %>
+                <div class="myFavoritePlayers">
+					<img class="playerPhoto" src="<%= players[i].path %>" alt="Photo not present">
+					<%= players[i].name %> <br>
+					Plays On: <%= players[i].team %> <br>
+					Jersey Number: <%= players[i].number %> <br>
+					Position: <%= players[i].position %> <br>
+					Nationality: <%= players[i].nationality %><br>
+					Transfer Market Value: $<%= players[i].salary %>
+					<form action="/deleteFavoritePlayer" method="POST">
+						<input type="hidden" name="playerID" value="<%= players[i].playerID %>">
+						<input type="submit" value="Delete player from favorites">
+					</form>
+				</div>
+				<% } %>
+            </div>
+            <div class="column">
+				<h3 style="text-align: center">Favorite Teams</h3>
+				<% for(var i = 0; i < teams.length; i++) { %>
+                <div class="myFavoriteTeams">
+					<img class="teamPhoto" src="<%= teams[i].path %>" alt="Photo not present">
+					<%= teams[i].name %> <br>
+					Founded in: <%= teams[i].foundedIn %> <br>
+					League: <%= teams[i].league %> <br>
+					Home Stadium: <%= teams[i].stadium %> <br>
+					<form action="/deleteFavoriteTeam" method="POST">
+						<input type="hidden" name="teamID" value="<%= teams[i].teamID %>">
+						<input type="submit" value="Delete team from favorites">
+					</form>
+				</div>
+				<% } %>
+            </div>
+            <div class="flexFiller"></div>
+        </div>
+        
+        <hr>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+
+			function disableYearTextBox() {
+				if(!document.getElementById("between").checked) {
+					document.getElementById("year2").disabled = true;
+				} else {
+					document.getElementById("year2").disabled = false;
+				}
+			}
+		</script>
+
+    </body>
+</html>
