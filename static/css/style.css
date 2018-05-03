@@ -55,6 +55,20 @@
     display: table;
 }
 
+.favorites {
+    display: flex;
+    align-items: flex-start;
+}
+
+.column {
+    flex: 30%;
+    padding: 10px;
+}
+
+.flexFiller {
+    flex: 15%;
+}
+
 .filler {
     width: 10%;
     float: left;
@@ -63,6 +77,18 @@
 
 .filler2 {
     width: 32.5%;
+    float: left;
+    padding: 15px;
+}
+
+.filler3 {
+    width: 10%;
+    float: left;
+    padding: 15px;
+}
+
+.filler4 {
+    width: 10%;
     float: left;
     padding: 15px;
 }
@@ -87,6 +113,17 @@
     text-align: right;
     border: 1px solid lightgrey;
     background-color: #f1f1f1;
+}
+
+.myFavoritePlayers, .myFavoriteTeams {
+    width: 100%;
+    float: left;
+    padding: 2px;
+    font-size: 18px;
+    text-align: right;
+    border: 1px solid lightgrey;
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
 }
 
 .playerPhoto, .teamPhoto {
@@ -141,8 +178,14 @@
     .playerSearchCol, .teamSearchCol, .resultsPlayer, .resultsTeam {
         width: 100%;
     }
-    .filler2 {
+    .myFavoritePlayers, .myFavoriteTeams {
+        width: 100%;
+    }
+    .filler2, .filler3 {
         width: 0%;
+    }
+    .flexFiller {
+        flex: 0%;
     }
 }
 
@@ -184,7 +227,7 @@
 }
 
 @media screen and (min-width: 1024px) {
-    .devbio:hover, .resultsPlayer:hover, .resultsTeam:hover {
+    .devbio:hover, .resultsPlayer:hover, .resultsTeam:hover, .myFavoritePlayers:hover, .myFavoriteTeams:hover {
         transform: scale(1.01);
     }
 }

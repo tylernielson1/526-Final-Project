@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			Admin Panel - Soccer Application
+		</title>
+	</head>
+
+	<body>
+		<div class="customNavBar" id="myNavBar">
+			<a href="/" id="left">Home</a>
+			<a href="searchplayers" id="left">Search Players</a>
+			<a href="searchteams" id="left">Search Teams</a>
+			<a href="logout" id="right">Log Out</a>
+			<a href="profile" id="right">Profile</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveDesignFunc()">&#9776;</a>
+		</div>
+
+		<header class="myHeader">
+			<div>
+				<h1 style="font-family:'Ubuntu',sans-serif;">
+					Admin Panel
+				</h1>
+			</div>
+        </header>
+
+        <div class="favorites" style="margin-top: 10px">
+            <div class="flexFiller"></div>
+            <div class="column">
+                <h3 style="text-align: center">All Players</h3>
+                <a href="addPlayer">Add a player</a>
+                <div class="myFavoritePlayers">
+                    <img class="playerPhoto" src="" alt="Photo not present">
+                    x <br>
+                    Founded in: x <br>
+                    League: x <br>
+                    Home Stadium: x <br>
+                    <form action="/deletePlayer" method="POST">
+                        <input type="hidden" name="playerID" value="playerID">
+                        <input type="submit" value="Delete Player">
+                    </form>
+                </div>
+            </div>
+            <div class="column">
+                <h3 style="text-align: center">All Teams</h3>
+                <a href="addTeam">Add a team</a>
+                <div class="myFavoriteTeams">
+                    <img class="teamPhoto" src="" alt="Photo not present">
+                    y <br>
+                    Founded in: y <br>
+                    League: y <br>
+                    Home Stadium: y <br>
+                    <form action="/deleteTeam" method="POST">
+                        <input type="hidden" name="teamID" value="teamID">
+                        <input type="submit" value="Delete Team">
+                    </form>
+                </div>
+            </div>
+            <div class="flexFiller"></div>
+        </div>
+        
+        <hr>
+
+		<div class="row">
+			<div class="filler"></div>
+			<footer class="footnote">
+				Copyright &copy; 2018 2 Cat Dads and a Guy
+				<br>
+				Site design: Tyler Nielson, Kevin Beashore, Jacob Dokos
+			</footer>
+			<div class="filler"></div>
+		</div>
+
+		<script>
+			function responsiveDesignFunc() {
+				var x = document.getElementById("myNavBar");
+				if (x.className === "customNavBar") {
+					x.className += " responsive";
+				} else {
+					x.className = "customNavBar";
+				}
+			}
+
+			function showHideOptions() {
+				var x = document.getElementById("options");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
+
+			function disableYearTextBox() {
+				if(!document.getElementById("between").checked) {
+					document.getElementById("year2").disabled = true;
+				} else {
+					document.getElementById("year2").disabled = false;
+				}
+			}
+		</script>
+
+    </body>
+</html>

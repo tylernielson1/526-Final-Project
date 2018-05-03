@@ -75,11 +75,11 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/index.ejs'), {loggedIn: req.loggedIn})
     })
 
-    server.get('/player-info/:player', function(req, res) {
+    server.get('/addPlayer', requiresAdmin, function(req, res) {
         res.render(path.join(__dirname, 'public/player.ejs'), {})
     })
 
-    server.get('team-info/:team', function(req, res) {
+    server.get('/addTeam', requiresAdmin, function(req, res) {
         res.render(path.join(__dirname, 'public/team.ejs'), {})
     })
 
@@ -188,8 +188,22 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         res.render(path.join(__dirname, 'public/signup.ejs'), {})
     })
 
-    server.get('/profile', function(req, res) {
-        res.render(path.join(__dirname, 'public/profile.ejs'), {})
+    server.get('/profile', isLoggedIn, function(req, res) {
+        if (req.loggedIn) {
+            var favoritePlayers
+            var favoriteTeams
+            user.getFavoritePlayers(req.session.username)
+            .then(players => {
+                favoritePlayers = players
+                res.render(path.join(__dirname, 'public/profile.ejs'), {players: players})
+            })
+            .catch(error => {
+                console.error(error)
+                res.redirect('/')
+            })
+        } else {
+            res.redirect('/')
+        }
     })
     
     server.get('/logout', function(req, res, next) {
@@ -225,8 +239,6 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
         }
         user.createNewUser(userData)
         .then(user => {
-            req.session.admin = user.adminStatus
-            req.session.username = user.username
             res.redirect('/')
         })
         .catch(error => {
@@ -261,6 +273,60 @@ SwaggerExpress.create(swagger_config, function(err, swaggerExpress) {
             console.error(error)
             res.statusCode = 404
             res.redirect('/login')
+        })
+    })
+
+    /* Establishes post endpoints for deleting players and teams */
+    server.post('/deletePlayer', function(req, res) {
+
+    })
+
+    server.post('/deleteTeam', function(req, res) {
+
+    })
+
+    /* Establishes post endpoints for adding favorite players */
+    server.post('/addFavoritePlayer', function(req, res) {
+        console.log(req.session.username)
+        console.log(req.body.playerID)
+        user.addFavoritePlayer(req.session.username, req.body.playerID)
+        .then(x => {
+            res.redirect('/profile')
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    })
+
+    server.post('/addFavoriteTeam', function(req, res) {
+        console.log(req.body.teamID)
+        user.addFavoriteTeam(req.session.username, req.body.teamID)
+        .then(x => {
+            res.redirect('/profile')
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    })
+
+    /* Establishes post endpoints for deleting favorite players */
+    server.post('/deleteFavoritePlayer', function(req, res) {
+        user.removeFavoritePlayer(req.session.username, req.body.playerID)
+        .then(x => {
+            res.redirect('/profile')
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    })
+
+    server.post('/deleteFavoriteTeam', function(req, res) {
+        user.removeFavoriteTeam(req.session.username, req.body.teamID)
+        .then(x => {
+            res.redirect('/profile')
+        })
+        .catch(error => {
+            console.log(error)
         })
     })
 

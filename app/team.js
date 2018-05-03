@@ -1,18 +1,18 @@
 const pool = require("../db/connection")
 const mysql = require("mysql")
 
-const GET_ALL_TEAMS_QUERY = "SELECT teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
+const GET_ALL_TEAMS_QUERY = "SELECT teams.teamID, teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
                             + "from teams\n"
                             + "inner join leagues on teams.playsInLeague=leagues.leagueID\n"
                             + "inner join stadiums on teams.homeStadium=stadiums.stadiumID;"
 
-const GET_TEAMS_BY_NAME_QUERY = "SELECT teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
+const GET_TEAMS_BY_NAME_QUERY = "SELECT teams.teamID, teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
                                 + "from teams\n"
                                 + "inner join leagues on teams.playsInLeague=leagues.leagueID\n"
                                 + "inner join stadiums on teams.homeStadium=stadiums.stadiumID\n"
                                 + "where teams.name LIKE \"%?%\";"
 
-const GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE = "SELECT teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
+const GET_TEAMS_ADVANCED_SEARCH_QUERY_BASE = "SELECT teams.teamID, teams.name as name, teams.yearFounded as foundedIn, leagues.name as league, stadiums.name as stadium, teams.photoPath as photoPath\n"
                                             + "from teams\n"
                                             + "inner join leagues on teams.playsInLeague=leagues.leagueID\n"
                                             + "inner join stadiums on teams.homeStadium=stadiums.stadiumID\n"
@@ -37,7 +37,8 @@ const THREE_LEAGUE_QUERY_PORTION = "leagues.name LIKE \"%?%\" OR league LIKE \"%
 /* portions of queries to assemble advanced search - Stadium */
 const STADIUM_NAME_QUERY_PORTION = "stadiums.name LIKE \"%?%\""
 
-function team(teamName, foundedIn, league, stadium, path) {
+function team(id, teamName, foundedIn, league, stadium, path) {
+    this.teamID = id
     this.name = teamName
     this.foundedIn = foundedIn
     this.league = league
@@ -54,7 +55,7 @@ function getAllTeams() {
             }
             var teams = new Array()
             for (var i = 0; i < results.length; i++) {
-                teams.push(createTeam(results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
+                teams.push(createTeam(results[i].teamID, results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
             }
             resolve(teams)
         })
@@ -72,7 +73,7 @@ function getTeamsByName(searchParam) {
             }
             var teams = new Array()
             for (var i = 0; i < results.length; i++) {
-                teams.push(createTeam(results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
+                teams.push(createTeam(results[i].teamID, results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
             }
             resolve(teams)
         })
@@ -146,15 +147,15 @@ function advancedSearchResultsTeams(params) {
             }
             var teams = new Array()
             for (var i = 0; i < results.length; i++) {
-                teams.push(createTeam(results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
+                teams.push(createTeam(results[i].teamID, results[i].name, results[i].foundedIn, results[i].league, results[i].stadium, results[i].photoPath))
             }
             resolve(teams)
         })
     })
 }
 
-function createTeam(name, yearFounded, leagueName, stadiumName, path) {
-    return new team(name, yearFounded, leagueName, stadiumName, path)
+function createTeam(id, name, yearFounded, leagueName, stadiumName, path) {
+    return new team(id, name, yearFounded, leagueName, stadiumName, path)
 }
 
 module.exports = {

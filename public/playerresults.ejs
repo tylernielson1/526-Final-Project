@@ -121,6 +121,12 @@
 				Position: <%= players[i].position %> <br>
 				Nationality: <%= players[i].nationality %><br>
 				Transfer Market Value: $<%= players[i].salary %>
+				<% if (loggedIn) { %>
+				<form action="/addFavoritePlayer" method="POST">
+					<input type="hidden" name="playerID" value="<%= players[i].playerID %>">
+					<input type="submit" value="Add player to favorites">
+				</form>
+				<% } %>
 			</div>
 			<div class="filler2"></div>
 		</div>

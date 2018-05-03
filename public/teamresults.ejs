@@ -95,7 +95,13 @@
 				<%= teams[i].name %> <br>
 				Founded in: <%= teams[i].foundedIn %> <br>
 				League: <%= teams[i].league %> <br>
-				Home Stadium: <%= teams[i].stadium %>
+				Home Stadium: <%= teams[i].stadium %> <br>
+				<% if (loggedIn) { %>
+				<form action="/addFavoriteTeam" method="POST">
+					<input type="hidden" name="teamID" value="<%= teams[i].teamID %>">
+					<input type="submit" value="Add Team">
+				</form>
+				<% } %>
 			</div>
 			<div class="filler2"></div>
 		</div>
